@@ -1,0 +1,91 @@
+[{
+	"name": "itunes_web_html_mapping",
+	"mappings": [
+		{
+			"key":"title",		
+			"xpath": "//div[@id='title']/h1",
+			"type": "string"
+		},
+		{
+			"key":"link",
+			"xpath": "/html/head/link[@rel='canonical']/@href"
+		},
+		{
+			"key":"price",
+			"xpath": "//div[@class='price']"
+		},
+		{
+			"key":"img_url",
+			"xpath": "//div[@id='left-stack']/div/div/img/@src"
+		},
+		{
+			"key":"requirements",
+			"xpath": "//div[@id='left-stack']/div/p"
+		},
+		{
+			"key":"release_date",
+			"xpath": "//li[@class='release-date']"
+		},
+		{
+			"key":"genre",
+			"xpath": "//li[@class='genre']/a"
+		},
+		{
+			"key":"genre_link",
+			"xpath": "//li[@class='genre']/a/@href"
+		},
+		{
+			"key":"language",
+			"xpath": "//li[@class='language']"
+		},
+		{
+			"key":"seller",
+			"xpath": "//div[@id='title']/h2"
+		},
+		{
+			"key":"app_rating",
+			"xpath": "//div[@class='app-rating']/a/text()"
+		},
+		{
+			"key":"screenshots",
+			"xpath": "//div[@class='lockup']",
+			"type":"vector",
+			"children": [
+				{
+					"key":"img_url",
+					"xpath":"img/@src"
+				}
+			]
+		},
+		{
+			"key":"description",
+			"xpath": "//div[@class='product-review']/p"
+		},
+		{
+			"key": "customer_review",
+			"xpath": "//div[@class='customer-review']",
+			"type":"vector",
+			"children": [
+				{
+					"key":"reviewer_name",
+					"xpath":"./span[@class='user-info']"
+				},
+				{
+					"key":"review_heading",
+					"xpath":"h5"
+
+				},
+				{
+					"key":"review_content",
+					"xpath":"p[@class='content']"
+				},
+				{
+					"key":"review_star_rating",
+					"xpath":"div[@class='rating']/@aria-label"
+				}
+			]
+		}
+	]
+
+}]	
+

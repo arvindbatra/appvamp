@@ -1,0 +1,66 @@
+<project name="Apper" default="compile">
+
+	<property name="build.dir"     value="build"/>
+	<property name="lib.dir"     value="lib"/>
+	<property name="jar.dir"     value="${build.dir}/jar"/>
+
+	 <path id="classpath">
+	        <fileset dir="${lib.dir}" includes="**/*.jar"/>
+	 </path>
+
+    <target name="clean">
+        <delete dir="build"/>
+    </target>
+
+    <target name="compile">
+        <mkdir dir="build/classes"/>
+        <javac srcdir="src" destdir="build/classes" classpathref="classpath" />
+    </target>
+
+    <target name="jar" depends="compile">
+        <mkdir dir="build/jar"/>
+        <jar destfile="${jar.dir}/Apper.jar" basedir="build/classes">
+            <manifest>
+                <attribute name="Main-class" value="com.pjab.apper.CrawlAppStrore"/>
+            </manifest>
+        </jar>
+    </target>
+
+    <!--target name="run" depends="jar">
+		  <java fork="true" classname="com.pjab.apper.CrawlAppStrore" output="stdout.txt" error="stderr.txt">
+            <classpath>
+                <path refid="classpath"/>
+                <path location="${jar.dir}/Apper.jar"/>
+            </classpath>
+        </java>
+    </target-->
+    
+    <target name="parse" depends="jar">
+		  <java fork="true" classname="com.pjab.apper.AppParser" output="parseout.txt" error="parseerr.txt">
+            <classpath>
+                <path refid="classpath"/>
+                <path location="${jar.dir}/Apper.jar"/>
+            </classpath>
+        </java>
+    </target>
+    
+	<target name="fetch" depends="jar">
+		  <java fork="true" classname="com.pjab.apper.AppFetcher" output="fetchout.txt" error="fetcherr.txt">
+            <classpath>
+                <path refid="classpath"/>
+                <path location="${jar.dir}/Apper.jar"/>
+            </classpath>
+        </java>
+    </target>
+	
+	<target name="dmaptest" depends="jar">
+		  <java fork="true" classname="com.pjab.apper.tests.DataMappingTest" >
+            <classpath>
+                <path refid="classpath"/>
+                <path location="${jar.dir}/Apper.jar"/>
+            </classpath>
+        </java>
+    </target>
+
+</project>
+
