@@ -1,3 +1,2 @@
-aaa
+baaa
 
-<?php phpinfo();?>
