@@ -38,7 +38,7 @@ public class AppData
 	{
 		Gson gson = new Gson();
 		StringBuilder builder = new StringBuilder();
-		builder.append("{"  );
+		builder.append("{\n"  );
 		if(fieldName == null)
 			fieldName = "-";
 		builder.append( gson.toJson(fieldName) );
@@ -68,7 +68,7 @@ public class AppData
 			
 		}
 	
-		builder.append("}");
+		builder.append("}\n");
 		
 		
 		return builder.toString();
