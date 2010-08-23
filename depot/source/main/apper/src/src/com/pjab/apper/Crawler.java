@@ -118,7 +118,7 @@ public class Crawler implements Runnable{
 			
 			if(toPrint)
 			{
-				printToFile(filename, response);
+				Utils.printToFile("apps/" + filename, response);
 				return filename;
 			}
 			
@@ -130,26 +130,7 @@ public class Crawler implements Runnable{
 	}
 	
 	
-	void printToFile(String filename, String data)
-	{
-		try {
-			System.out.println("Writing app to file " + filename);
-			FileWriter fstream = new FileWriter("apps/" + filename);
-			BufferedWriter out = new BufferedWriter(fstream);
-			out.write(data);
-			out.close();
-			fstream.close();
-		} catch(IOException ioe)
-		{
-			
-			System.err.println("IOException while writing file " + filename);
-			ioe.printStackTrace(System.err);
-			
-			System.exit(-5);
-		}
-		
-		
-	}
+
 	
 	
 	String cleanURL(String url)

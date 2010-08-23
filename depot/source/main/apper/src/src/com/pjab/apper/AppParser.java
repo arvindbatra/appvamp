@@ -157,7 +157,7 @@ public class AppParser
 				rootAppData.children.add(childData);
 			}
 			
-			System.out.println("Arv_" + rootAppData.toJSON());
+		//	System.out.println("Arv_" + rootAppData.toJSON());
 			return rootAppData;
 		
 			
@@ -269,12 +269,12 @@ public class AppParser
 		
 	}
 	
-	public void parseWithDataMappings(DataMapping dm) throws Exception
+	public AppData parseWithDataMappings(DataMapping dm) throws Exception
 	{
 		String appContent = Utils.readFile(m_appName);
 		String cleanAppContent = cleanContent(appContent);
 		
-		extractFields(cleanAppContent, dm);
+		return extractFields(cleanAppContent, dm);
 		
 		
 	}

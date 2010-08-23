@@ -73,5 +73,13 @@
         </java>
     </target>
 
+	<target name="urlsourcer" depends="jar">
+		  <java fork="true" classname="com.pjab.apper.tests.UrlSourceReader" >
+            <classpath>
+                <path refid="classpath"/>
+                <path location="${jar.dir}/Apper.jar"/>
+            </classpath>
+        </java>
+    </target>
 </project>
 
