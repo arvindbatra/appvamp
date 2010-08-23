@@ -1,7 +1,9 @@
 package com.pjab.apper;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 
 public class Utils {
@@ -20,6 +22,25 @@ public class Utils {
 	    
 	
 	}
-
+	public static void printToFile(String filename, String data)
+	{
+		try {
+			System.out.println("Writing app to file " + filename);
+			FileWriter fstream = new FileWriter( filename);
+			BufferedWriter out = new BufferedWriter(fstream);
+			out.write(data);
+			out.close();
+			fstream.close();
+		} catch(IOException ioe)
+		{
+			
+			System.err.println("IOException while writing file " + filename);
+			ioe.printStackTrace(System.err);
+			
+			System.exit(-5);
+		}
+		
+		
+	}
 	
 };
