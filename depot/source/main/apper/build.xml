@@ -61,6 +61,17 @@
             </classpath>
         </java>
     </target>
+	
+	<target name="initDB" depends="jar">
+		  <java fork="true" classname="com.pjab.apper.init.InitializeDatabase" >
+            <classpath>
+                <path refid="classpath"/>
+                <path location="${jar.dir}/Apper.jar"/>
+            </classpath>
+	    <sysproperty key="java.net.preferIPv4Stack" value="true"/>
+
+        </java>
+    </target>
 
 </project>
 
