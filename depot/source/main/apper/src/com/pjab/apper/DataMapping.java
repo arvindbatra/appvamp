@@ -77,7 +77,7 @@ public class DataMapping
 	{
 		Map<String,DataMapping> map = new HashMap<String, DataMapping>();
 		String jsonContent = Utils.readFile(filename);
-		System.out.println(jsonContent);
+		//System.out.println(jsonContent);
 		JsonParser jparser  = new JsonParser();
 		JsonArray jarray = (jparser.parse(jsonContent)).getAsJsonArray();
 		

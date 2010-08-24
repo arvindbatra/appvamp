@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -14,6 +15,8 @@ import com.pjab.apper.AppData;
 import com.pjab.apper.AppParser;
 import com.pjab.apper.Crawler;
 import com.pjab.apper.DataMapping;
+import com.pjab.apper.DatabaseConfig;
+import com.pjab.apper.DatabaseUtils;
 import com.pjab.apper.URLInfo;
 import com.pjab.apper.Utils;
 
@@ -60,21 +63,31 @@ public class UrlSourceReader
         File [] files = dir.listFiles();
 		Map<String,DataMapping> mappings = DataMapping.readJson("data/dataMappings.json");
 		DataMapping dm = mappings.get("itunes_web_html_mapping");
-        
+		Connection conn = DatabaseConfig.getInstance().getConnection();
 		for( File f: files)
         {
+			
         	String appFileName = "apps/" + f.getName();
         	AppParser parser = new AppParser(appFileName);
     		try {
     			AppData appData = parser.parseWithDataMappings(dm);
-    			String appDataFile = "appData/" + f.getName();
+    			String appDataFile = "appData1/" + f.getName();
     			System.out.println(appDataFile);
     			Utils.printToFile(appDataFile, appData.toJSON());
+    		
+    			System.out.println("Writing to database");
+    			DatabaseUtils.insertAppInfo(conn, appData);
+    			
     		}catch (Exception e)
     		{
     			System.out.println("Exception thrown for file" + e.getMessage());
+    			e.printStackTrace();
+    			//break;
     		}
-        }
+    		
+    	}
+		
+		DatabaseConfig.getInstance().terminateConnection();
         	
 	}
 	

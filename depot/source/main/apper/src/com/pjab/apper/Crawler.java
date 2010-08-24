@@ -96,6 +96,12 @@ public class Crawler implements Runnable{
 
 		}
 		
+		if(!response.contains("html"))
+		{
+			System.err.println("Received binary file. Skipping " + curURLInfo.m_url);
+			return "";
+		}
+		
 		Pattern appPattern = Pattern.compile("app\\/");
 		Matcher m = appPattern.matcher(curURLInfo.m_url);
 		if(m.find())
