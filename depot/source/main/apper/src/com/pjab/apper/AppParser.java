@@ -59,18 +59,24 @@ public class AppParser
 	{
 		
 		Tidy tidy = new Tidy();
+		String output = Utils.RemoveTroublesomeCharacters(content);
+
+		tidy.setInputEncoding("utf8");
 		tidy.setXmlOut(true);
 		tidy.setDropEmptyParas(true);
 		tidy.setIndentContent(true);
 		tidy.setKeepFileTimes(true);
 		tidy.setSmartIndent(true);
+		
+		//tidy.setOutputEncoding("utf8");
 		//tidy.setXmlPi(true);
 		tidy.setShowWarnings(false);
-		StringReader reader = new StringReader(content);
+		StringReader reader = new StringReader(output);
 		StringWriter writer = new StringWriter();
 		tidy.parse(reader,writer);
 		
-		return writer.toString();
+		String cleanoutput = writer.toString();
+		return Utils.removeMultipleWhiteSpaces(cleanoutput);
 		
 		
 	
