@@ -8,11 +8,11 @@ class AppController extends Controller
 
 	function view()
 	{
-	  	echo "Inside app controller view action<br>";
+	  	$this->logger->debug( "Inside app controller view action");
 		$this->set('title', 'appvamp');
 
-		$appModel = new AppModel();
-		$appModel->getAllApps();
+//		$appModel = new AppModel();
+//		$appModel->getAllApps();
 		$this->_template->render();
 
 	}

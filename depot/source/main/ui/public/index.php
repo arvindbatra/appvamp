@@ -5,8 +5,6 @@ define('ROOT', dirname(dirname(__FILE__)));
 
 
 
-echo ROOT;
-echo DS;
 
 require_once (ROOT . DS . 'lib' . DS . 'bootstrap.php');
 

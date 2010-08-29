@@ -55,6 +55,8 @@ function unregisterGlobals()
 function route()
 {
 	setReporting();
+
+	$logger = AppLogger::getInstance()->getLogger();
 	
 	/**read params and then unregisterGlobals()*/
 	$url = '';
@@ -68,6 +70,7 @@ function route()
 
 	$qpacket = array();
 	$qpacket["url"] = $url;
+	$logger->info('url:' . $url);
 
 	$controllerName = getController($qpacket);
 	$controllerName .= 'Controller';
@@ -83,10 +86,10 @@ function getController($qpacket)
 {
 	$url = $qpacket["url"];
 
-	if(empty($url)) { 
+//	if(empty($url)) { 
 		$url = "app";
-	}
-	echo $url;
+//	}
+//	echo "url:" . $url ."<br>";
 	return $url;
 }
 
@@ -97,7 +100,7 @@ function getController($qpacket)
 
 function __autoload($className) 
 {
-	echo "Autoload called $className <br>";
+	//echo "Autoload called $className <br>";
 	if (file_exists(ROOT . DS . 'lib' . DS . strtolower($className) . '.class.php')) {
 		require_once(ROOT . DS . 'lib' . DS . strtolower($className) . '.class.php');
 	} else if (file_exists(ROOT . DS . 'application' . DS . 'controllers' . DS . strtolower($className) . '.php')) {
@@ -111,6 +114,8 @@ function __autoload($className)
 	}
 }
 
- spl_autoload_register('__autoload');
+
+
+spl_autoload_register('__autoload');
 
 route();

@@ -24,12 +24,10 @@ class AppLogger {
 
 	public static function getInstance() 
 	{
-	  echo "getlooger called <br>";
 
 	   if(!isset(self::$instance)) 
 	   {
 			$c = __CLASS__;
-	  		echo "$c <br>";
 			self::$instance  = new $c;
 
 		}

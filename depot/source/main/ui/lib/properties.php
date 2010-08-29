@@ -10,8 +10,14 @@ class Properties
 	}
 	public function __get($index)
 	{
-	  return $this->vars[$index];
+		return $this->vars[$index];
 	}
+	public function exists($index)
+	{
+		if(array_key_exists($index, $this->vars))
+				return true;
+		return false;
+	}
+
 }
 
-echo "properties are loaded\n";

@@ -6,9 +6,11 @@ class Controller {
 	protected $_actionName;
 	protected $_template;
 	protected $_model;
+	protected $logger;
 
 	function __construct($qpacket)
 	{
+		$this->logger = AppLogger::getInstance()->getLogger();
 	  	if(isset($packet['controllerName']))
 			$this->$_controllerName = $qpacket['controllerName'];
 
@@ -27,10 +29,10 @@ class Controller {
 		$this->_template = new Template ();
 
 		foreach($qpacket as $key => &$val) {
-			echo "aarv_$key  $val<br>";
+			//echo "aarv_$key  $val<br>";
 			$this->set($key,$val);
 		}
-		$this->set('themes', 'basic');
+		$this->set('themes', 'selecta');
 		$plugins = '';
 		if(!empty($plugins))
 			$this->loadPlugins($plugins);
