@@ -8,12 +8,14 @@ import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 import com.pjab.apper.AppData;
 import com.pjab.apper.AppParser;
 import com.pjab.apper.Crawler;
+import com.pjab.apper.ApperConstants;
 import com.pjab.apper.DataMapping;
 import com.pjab.apper.DatabaseConfig;
 import com.pjab.apper.DatabaseUtils;
@@ -23,10 +25,12 @@ import com.pjab.apper.Utils;
 public class UrlSourceReader 
 {
 	List<String> urls;
+	private Properties props;
 	
-	public UrlSourceReader() {
+	public UrlSourceReader( Properties properties) {
 		// TODO Auto-generated constructor stub
 		urls = new ArrayList<String>();
+		props = properties;
 	}
 	public void readURLs( String file ) throws IOException {
 	    BufferedReader reader = new BufferedReader( new FileReader (file));
@@ -43,15 +47,17 @@ public class UrlSourceReader
 	{
 		ConcurrentLinkedQueue<URLInfo>processQueue = new ConcurrentLinkedQueue<URLInfo>();
 		ConcurrentHashMap<String, Boolean> seenURLs = new ConcurrentHashMap<String, Boolean>();
+
+		String outputAppDir = props.getProperty(ApperConstants.OUTPUT_APP_DIR);
 		
-		Crawler crawler = new Crawler(processQueue,seenURLs,0);
+		Crawler crawler = new Crawler(processQueue,seenURLs,0, outputAppDir);
 		
 		for(int i=0; i<urls.size(); i++)
 		{
 			String seedURL = urls.get(i);
 			URLInfo newURLInfo = new URLInfo(seedURL,"",0);
 			crawler.crawl(newURLInfo);
-			Thread.sleep(1000);
+			Thread.sleep(2000);
 		}
 		
 	}
@@ -59,24 +65,32 @@ public class UrlSourceReader
 	
 	private void parseFiles() throws Exception
 	{
-		File dir = new File("apps");
-        File [] files = dir.listFiles();
+		String appOutDir = props.getProperty(ApperConstants.OUTPUT_APP_DIR);
+		String appDataDir = props.getProperty(ApperConstants.OUTPUT_DATA_DIR);
+	  	File appDir = new File(appOutDir);
+	  	File dataDir = new File(appDataDir);
+		if(!dataDir.exists())
+		  	dataDir.mkdirs();
+		if(!appDir.exists())
+		  	appDir.mkdirs();
+
+        File [] files = appDir.listFiles();
 		Map<String,DataMapping> mappings = DataMapping.readJson("data/dataMappings.json");
 		DataMapping dm = mappings.get("itunes_web_html_mapping");
 		Connection conn = DatabaseConfig.getInstance().getConnection();
 		for( File f: files)
         {
 			
-        	String appFileName = "apps/" + f.getName();
+        	String appFileName =  appOutDir + "/" + f.getName();
         	AppParser parser = new AppParser(appFileName);
     		try {
     			AppData appData = parser.parseWithDataMappings(dm);
-    			String appDataFile = "appData1/" + f.getName();
+    			String appDataFile = appDataDir + "/" + f.getName();
     			System.out.println(appDataFile);
     			Utils.printToFile(appDataFile, appData.toJSON());
     		
     			System.out.println("Writing to database");
-    			DatabaseUtils.insertAppInfo(conn, appData);
+    			DatabaseUtils.insertAppInfoIfNotExists(conn, appData);
     			
     		}catch (Exception e)
     		{
@@ -96,10 +110,12 @@ public class UrlSourceReader
 	public static void main(String[] args) throws Exception
 	{
 		String filename = "data/top50appslist.txt";
+		Properties prop = Utils.loadProperties("default.properties");		
+
+		UrlSourceReader reader = new UrlSourceReader(prop);
+
 		
-		UrlSourceReader reader = new UrlSourceReader();
-		
-		reader.readURLs(filename);
+		//reader.readURLs(filename);
 		//reader.getApps();
 		reader.parseFiles();
 	}

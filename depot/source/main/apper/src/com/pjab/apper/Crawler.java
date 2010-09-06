@@ -2,6 +2,7 @@ package com.pjab.apper;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
+import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
@@ -22,6 +23,9 @@ import org.apache.http.protocol.HTTP;
 import org.apache.http.protocol.HttpContext;
 import org.apache.http.protocol.RequestUserAgent;
 
+import com.pjab.apper.ApperConstants;
+
+
 public class Crawler implements Runnable{
 	
 	//public static final String PJAB_USER_AGENT = "iTunes/4.2 (Macintosh; U; PPC Mac OS X 10.2) ";
@@ -36,15 +40,22 @@ public class Crawler implements Runnable{
 	ConcurrentLinkedQueue <URLInfo> m_processQueue;
 	ConcurrentHashMap<String, Boolean> m_seenURLs;
 	private int m_crawlDepth;
+	private String m_outputDir;	
 	
-	
-	public Crawler(ConcurrentLinkedQueue <URLInfo> processQueue, ConcurrentHashMap<String, Boolean> seenURLs,  int depth) 
+	public Crawler(ConcurrentLinkedQueue <URLInfo> processQueue, ConcurrentHashMap<String, Boolean> seenURLs,  int depth, String outputDir ) 
 	{
 		
 		m_crawlDepth = depth;
 		m_seenURLs = seenURLs;
 		m_processQueue = processQueue;
-				
+		m_outputDir = outputDir;
+
+		File outputD = new File(m_outputDir);
+		if(!outputD.exists())
+		{
+			outputD.mkdirs();
+		}
+		System.out.println("Using output dir" + m_outputDir);	
 	}
 	
 	
@@ -56,6 +67,13 @@ public class Crawler implements Runnable{
 			URLInfo urlInfo;
 			urlInfo = m_processQueue.remove();
 			crawl(urlInfo);
+			try {
+				Thread.sleep(1000);
+			}catch(java.lang.InterruptedException ioe)
+			{
+				System.err.println(ioe.getMessage());
+			}
+
 		}
 		
 	
@@ -124,8 +142,8 @@ public class Crawler implements Runnable{
 			
 			if(toPrint)
 			{
-				Utils.printToFile("apps/" + filename, response);
-				return filename;
+				Utils.printToFile(m_outputDir + "/" + filename, response);
+				return (filename);
 			}
 			
 			
@@ -158,13 +176,17 @@ public class Crawler implements Runnable{
 		
 		
 		Pattern appPattern = Pattern.compile("app\\/");
+		Pattern sitePattern = Pattern.compile("itunes.apple.com");
 		Pattern genrePattern = Pattern.compile("genre\\/");
-		Matcher m = appPattern.matcher(url);
+		Matcher m = sitePattern.matcher(url);
+		if(!m.find())
+			  return true;
+		m = appPattern.matcher(url);
 		if(m.find())
 		{
 			toIgnore = false;
-			return toIgnore;
 		}
+			
 		m = genrePattern.matcher(url);
 		if(m.find())
 		{

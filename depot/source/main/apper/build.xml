@@ -25,15 +25,24 @@
             </manifest>
         </jar>
     </target>
+    
+	<target name="server" depends="jar">
+		  <java fork="true" classname="com.pjab.apper.server.JavaServer">
+            <classpath>
+                <path refid="classpath"/>
+                <path location="${jar.dir}/Apper.jar"/>
+            </classpath>
+        </java>
+    </target>
 
-    <!--target name="run" depends="jar">
+    <target name="crawlstore" depends="jar">
 		  <java fork="true" classname="com.pjab.apper.CrawlAppStrore" output="stdout.txt" error="stderr.txt">
             <classpath>
                 <path refid="classpath"/>
                 <path location="${jar.dir}/Apper.jar"/>
             </classpath>
         </java>
-    </target-->
+    </target>
     
     <target name="parse" depends="jar">
 		  <java fork="true" classname="com.pjab.apper.AppParser" output="parseout.txt" error="parseerr.txt">
@@ -79,6 +88,7 @@
                 <path refid="classpath"/>
                 <path location="${jar.dir}/Apper.jar"/>
             </classpath>
+
         </java>
     </target>
 </project>

@@ -65,7 +65,7 @@ class InitializeDatabase
 	}
 
 
-	private void  createTables(boolean override)
+	private void  createTableAppInfo(boolean override)
 	{
 		if(conn == null)
 			return;
@@ -83,18 +83,20 @@ class InitializeDatabase
 						" id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, " + 
 						" app_name VARCHAR(100) NOT NULL, " + 
 						" seller VARCHAR(100), " + 
-						" app_external_id VARCHAR(20), " + 
-						" release_date VARCHAR(50), " + 
-						" price VARCHAR(20), " + 
-						" orig_link VARCHAR(100), " + 
+						" app_external_id VARCHAR(50), " + 
+						" release_date VARCHAR(100), " + 
+						" price VARCHAR(100), " + 
+						" orig_link VARCHAR(200), " + 
 						" img_url VARCHAR(100), " + 
 						" requirements VARCHAR(100), " + 
-						" genre VARCHAR(20), " + 
-						" app_rating VARCHAR(20), " + 
+						" genre VARCHAR(100), " + 
+						" app_rating VARCHAR(50), " + 
 						" screenshots VARCHAR(1000), " + 
-						" language VARCHAR(20), " + 
+						" language VARCHAR(200), " + 
+						" created_at DATETIME, " + 
+						" updated_at DATETIME, " + 
 						" description VARCHAR(10000)" + 
-						");";
+						") engine=InnoDB;";
 		System.out.println("Query: " + query);
 
 
@@ -115,13 +117,98 @@ class InitializeDatabase
 		{
 			 e.printStackTrace();
 		}
-	
+		
+
 
 
 	}
 
 
+	private void createTableAppReviews( boolean override)
+	{
+		if(conn == null)
+			return;
+		String tablename = "AppReviews";
+		boolean exists  = tableExists (tablename);
+		if(exists && !override)
+		{
+			System.out.println("Table exists, returning");
+		  	return;
+		}
+		
+		if(exists)
+			dropTable(tablename);
 
+		String query = "Create TABLE " + tablename  + " ( " + 
+						" id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, " + 
+						" app_id INT NOT NULL, " +
+						" app_name VARCHAR(100) NOT NULL, " +
+						" title VARCHAR(500), " +
+						" review VARCHAR(20000) NOT NULL, " + 
+						" reviewer VARCHAR(200), " + 
+						" created_at DATETIME, " + 
+						" INDEX (app_id), " + 
+						" FOREIGN KEY (app_id) REFERENCES AppInfo(id) " +
+						" ) engine=InnoDB;";
+
+
+		System.out.println("Query: " + query);
+		try {
+			Statement  stmt = conn.createStatement();
+			stmt.executeUpdate(query);	
+		}catch (SQLException e)
+		{
+			 e.printStackTrace();
+		}
+						
+
+		
+	}
+
+
+	private void createTableAppLine(boolean override)
+	{
+		if(conn == null)
+			return;
+		String tablename = "AppLine";
+		boolean exists  = tableExists (tablename);
+		if(exists && !override)
+		{
+			System.out.println("Table exists, returning");
+		  	return;
+		}
+		
+		if(exists)
+			dropTable(tablename);
+
+		String query = "Create TABLE " + tablename  + " ( " + 
+						" id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, " + 
+						" app_id INT NOT NULL, " + 
+						" app_review_id INT NOT NULL, " +
+						" app_name VARCHAR(100) NOT NULL, " +
+						" on_date DATETIME, " +
+						" created_at DATETIME, " +
+						" updated_at DATETIME, " +
+						" INDEX (app_id), " + 
+						" FOREIGN KEY (app_id) REFERENCES AppInfo(id), " +
+						" INDEX (app_review_id), " + 
+						" FOREIGN KEY (app_review_id) REFERENCES AppReviews(id) " +
+						" ) engine=InnoDB;";
+
+
+		System.out.println("Query: " + query);
+		try {
+			Statement  stmt = conn.createStatement();
+			stmt.executeUpdate(query);	
+		}catch (SQLException e)
+		{
+			 e.printStackTrace();
+		}
+						
+
+
+
+	}
 
 
 
@@ -146,7 +233,9 @@ class InitializeDatabase
 		init.connect(ROOT_USER, ROOT_PASSWD);
 		
 
-		init.createTables(true);
+		init.createTableAppInfo(true);
+		init.createTableAppReviews(true);
+		init.createTableAppLine(true);
 
 
 		init.terminate();

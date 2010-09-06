@@ -2,8 +2,10 @@ package com.pjab.apper;
 
 
 import com.pjab.apper.URLInfo;
+import com.pjab.apper.ApperConstants;
 
 
+import java.util.Properties;
 import java.util.ArrayList;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -17,7 +19,9 @@ public class CrawlAppStrore {
 	 public static void main(String[] args) throws Exception {
 
 		 	System.out.println("Hello world!");
-		 	
+			Properties props = Utils.loadProperties("default.properties");		
+			String outputAppDir = props.getProperty(ApperConstants.OUTPUT_APP_DIR);
+		 		
 		 	
 		 	int depth = MAX_CRAWL_DEPTH;
 		 	String seedURL = SEED_URL;
@@ -32,7 +36,7 @@ public class CrawlAppStrore {
 			
 			int numThreads = 5;
 			
-			Thread thread0 = new Thread(new Crawler(processQueue,seenURLs,depth), "thread0");
+			Thread thread0 = new Thread(new Crawler(processQueue,seenURLs,depth, outputAppDir), "thread0");
 			ArrayList<Thread> crawlThreads = new ArrayList<Thread>();
 			crawlThreads.add(thread0);
 			
@@ -41,7 +45,7 @@ public class CrawlAppStrore {
 			
 			for(int i=1; i<numThreads; i++)
 			{
-				Thread thread = new Thread(new Crawler(processQueue,seenURLs, depth), "thread"+i);
+				Thread thread = new Thread(new Crawler(processQueue,seenURLs, depth, outputAppDir), "thread"+i);
 				thread.start();
 				crawlThreads.add(thread);
 				

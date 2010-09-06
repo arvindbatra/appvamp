@@ -3,16 +3,31 @@ package com.pjab.apper;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileReader;
+import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.Properties;
 
 
 
 public class Utils {
 
-	
+
+	public static Properties loadProperties(String propFile) throws IOException
+	{
+		// create and load default properties
+		 Properties defaultProps = new Properties();
+		 FileInputStream in = new FileInputStream(propFile);
+		 defaultProps.load(in);
+		 in.close();
+
+		 return defaultProps;
+//
+	}
+
+
 	public static String readFile( String file ) throws IOException {
 	    BufferedReader reader = new BufferedReader( new FileReader (file));
 	    String line  = null;
