@@ -12,4 +12,10 @@ class DBModel extends BaseModel
 
 	}
 
+	function __destruct()
+	{
+		
+
+	}
+
 };

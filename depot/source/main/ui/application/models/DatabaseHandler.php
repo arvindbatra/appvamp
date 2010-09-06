@@ -25,7 +25,6 @@ class DatabaseHandler
 
 	public function  __destruct ()
 	{
-	  echo "Destructor DB Handler called <br>\n";
 		@mysql_close($this->_dbHandle);
 	}
 
@@ -42,13 +41,12 @@ class DatabaseHandler
 				return false;
 		}
 		else
-			echo "DB handle was 0 ". mysql_error();
+			$this->myLogger->error( "DB handle was 0 ". mysql_error());
 	}
 
 
 	public static function getInstance()
 	{
-	 	echo "inside get instance<br>";
 		if(!isset(self::$instance)) {
 		  $c = __CLASS__;
 		  self::$instance  = new $c;

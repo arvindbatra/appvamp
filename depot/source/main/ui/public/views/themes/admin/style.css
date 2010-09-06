@@ -1,0 +1,26 @@
+
+
+
+.error {
+	color: red;
+	background-color:yellow;
+	font-weight:bold;	
+
+}
+
+
+.info {
+	background-color:green;
+	font-weight:bold;	
+
+}
+
+
+.curved-box {
+	border: 2px solid black;
+	padding: 10px 2px 10px 2px;
+  	-moz-border-radius: 10px; 
+	-webkit-border-radius: 10px;
+	border-radius: 10px; /* future proofing */
+	-khtml-border-radius: 10px; /* for old Konqueror browsers *p */ 
+}

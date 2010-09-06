@@ -29,10 +29,13 @@ class Controller {
 		$this->_template = new Template ();
 
 		foreach($qpacket as $key => &$val) {
-			//echo "aarv_$key  $val<br>";
 			$this->set($key,$val);
+			$this->logger->debug('arv_setting '.$key.'='.$val);
 		}
-		$this->set('themes', 'selecta');
+		$themeName = 'selecta';
+		$themeName = 'appvamp';
+		$this->set('themes', $themeName);
+		$this->set('themeDir',  'views' . DS . 'themes' . DS . $themeName );
 		$plugins = '';
 		if(!empty($plugins))
 			$this->loadPlugins($plugins);
@@ -50,7 +53,12 @@ class Controller {
 	 	$this->_template->set($name, $value);
 	}
 
-	function _destruct() { 
+	function get($key, $defaultValue)
+	{
+	 	return $this->_template->get($key, $defaultValue);
+	}
+	
+	function __destruct() { 
 		$this->_template->render();
 
 	}

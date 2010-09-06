@@ -11,9 +11,11 @@ class AppController extends Controller
 	  	$this->logger->debug( "Inside app controller view action");
 		$this->set('title', 'appvamp');
 
-//		$appModel = new AppModel();
-//		$appModel->getAllApps();
-		$this->_template->render();
+		$appModel = new AppModel();
+		$featuredPost = $appModel->getAppPost();
+		if(isset($featuredPost)) {
+			$this->set('featuredPost', $featuredPost);
+		}
 
 	}
 
