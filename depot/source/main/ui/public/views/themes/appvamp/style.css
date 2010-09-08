@@ -257,23 +257,25 @@ body{color: #111; background: #708090;}
 
 
 .post-body {
-	width: 650px;
+	width: 980px;
 	float: left;
 	
 }
 
 
 /* ------Sidebar properties */
-.post-body .sidebar {float: left; width: 250px;}
-	.post-body .sidebar img{float: left; width: 225px; padding:10px 15px}
+.post-body .sidebar {float: left; width: 320px;}
+	.post-body .sidebar img{float: left; width: 250px; height: 300px; padding:10px 10px}
 
 .post-body .content { 
 	float: left;
-	width: 400px;
+	width: 500px;
 	padding-left: 10px;
-	padding-right: 10px;
+	padding-right: 30px;
 	text-align: justify;
 	position:relative;
+	font-size: 10pt;
+	line-height:15px;
 }
 
 
@@ -304,7 +306,12 @@ body{color: #111; background: #708090;}
 }
 
 
-
+/**********previous posts *****************/
+.previous-posts {
+	float:left;
+	padding: 10px;
+}
+.previous-posts img{float: left; width: 100px; height: 100px; padding:10px 10px}
 
 
 
@@ -324,6 +331,23 @@ body{color: #111; background: #708090;}
 	background-color: #3C96DF;
 
 }
+	.footer .nav {
+		margin:0;
+		float:right;
+		font-size: 11pt;
+		text-align: right;
+		position:relative;
+	}
+
+		.footer .nav li {
+			display:inline;
+			margin:0;
+		}
+		.footer .nav a:link, 
+		.footer .nav a:visited {
+			color:#000;
+			padding:0px 10px 0px 20px;
+		}
 
 
 

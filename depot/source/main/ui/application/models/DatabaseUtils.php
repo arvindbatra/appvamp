@@ -37,6 +37,19 @@ class DatabaseUtils
 		return self::queryAppLine($dbHandle, $query);
 	}
 
+	//Returns the app for the  date specified or the previous app post that exists";
+	public static function getAppPostByDate($dbHandle, $date)
+	{
+		$query = "select * from AppLine where on_date<='$date' order by on_date desc limit 1";
+		return self::queryAppLine($dbHandle, $query);
+	}
+	
+	public static function getPreviousPostsFromDate($dbHandle, $date, $numPosts)
+	{
+		$query = "select * from AppLine where on_date<'$date' order by on_date desc limit $numPosts";
+		return self::queryAppLine($dbHandle, $query);
+	}
+
 
 	public static function queryAppLine($dbHandle, $query)
 	{
@@ -84,6 +97,7 @@ class DatabaseUtils
 		mysql_free_result($result);
 		return $table;
 	}
+
 
 	
 	public static function queryAppInfoByName($dbHandle, $name)
@@ -164,6 +178,7 @@ class DatabaseUtils
 	public static function insertAppReview($dbHandle, $appId, $appName, $reviewer, $reviewTitle, $review)
 	{
 		$logger = AppLogger::getInstance()->getLogger();
+		$review = mysql_real_escape_string($review);
 		$query = "insert into AppReviews(app_id, app_name, title, review, reviewer, created_at) values ('$appId', '$appName', '$reviewTitle', '$review', '$reviewer', CURDATE());" ;
 		$logger->debug('Calling query ' . $query);
 		if(mysql_query($query, $dbHandle))

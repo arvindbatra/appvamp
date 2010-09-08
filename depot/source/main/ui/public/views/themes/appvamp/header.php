@@ -5,7 +5,7 @@
 
 
 <title><?php echo $title; ?></title>
-<link href="<?php echo $themeDir?>/style.css" rel="stylesheet" type="text/css" />
+<link href="/<?php echo $themeDir?>/style.css" rel="stylesheet" type="text/css" />
 
 
 </head>
@@ -15,7 +15,7 @@
 	<div id="header-container">
 	<div class="container-header-dark-normal"><span></span></div>
 	<div class="header" >
-		<h1> The <b>AppVamp</b> </h1>
+		<h1> <a href="/"> The <b>AppVamp</b></a></h1>
 		<div class="generic-info">
 			<i>I am the App Vamp!</i>
 		</div>
@@ -23,7 +23,7 @@
 
 		<div class="header-box" >
 			<ul class="nav">
-				<li><a href="#">App of the day</a></li>
+				<li><a href="/">App of the day</a></li>
 				<li><a href="#">So just what is a Vamp ?</a></li>
 				<li><a href="#">The Team</a></li>
 				<li><a href="#">Reach out and Touch Me</a></li>

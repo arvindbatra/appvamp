@@ -15,18 +15,38 @@ class AppModel
 		$this->appClient = new AppClient(); 
 	}
 
-	public function getAppPost()
+	public function getAppPostOfTheDay($date)
 	{
-		$qpacket = array();
-		$qpacket['action'] = 'fetch_app';
-		$qpacket['url'] = "http://itunes.apple.com/us/app/apollo-11-the-game/id322260353?mt=8";
+		if(!isset($date))
+		{
+			$date = $today = date("Y-m-d");
+		}
+	  	$dbHandle = DatabaseHandler::getInstance()->getHandle();
+		$postArr = DatabaseUtils::getAppPostByDate($dbHandle, $date);
+		if(count($postArr) > 0)
+		{
+		  	return $postArr[0];
+		}
+		return null;	
 
-		$resp = $this->appClient->queryServer($qpacket);
+	}
+
+	public function getPreviousPostsFromDate($date, $numPosts)
+	{
+		$dbHandle = DatabaseHandler::getInstance()->getHandle();
+		if(!isset($date))
+		{
+			$date = $today = date("Y-m-d");
+		}
+		$postArr = DatabaseUtils::getPreviousPostsFromDate($dbHandle, $date, $numPosts);
+		return $postArr;
+	}
+
+	public function getAppPost($appName)
+	{
 
 	  	$dbHandle = DatabaseHandler::getInstance()->getHandle();
-
-		//$appList  = DatabaseUtils::queryAllAppInfo($dbHandle);
-		$postArr = DatabaseUtils::getPostData($dbHandle, 'ivalet');
+		$postArr = DatabaseUtils::getPostData($dbHandle, $appName);
 
 		if(count($postArr) > 0)
 		{

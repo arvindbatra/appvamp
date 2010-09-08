@@ -5,7 +5,7 @@
 <div id="footer-container">
 	<div class="footer clearfix">
 		&copy AppVamp
-			<ul class="nav" align="right">
+			<ul class="nav"  >
 				<li><a href="#">Contact</a></li>
 				<li><a href="#">About</a></li>
 				<li><a href="#">Terms of Service</a></li>

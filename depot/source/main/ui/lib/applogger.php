@@ -12,7 +12,6 @@ class AppLogger {
 		//$appender = $this->logger->getAppender('R');
 		//$appender->setFile('apper.log');
 		//echo $appender->getFile();
-		$this->logger->debug('Hello!');
 	}
 							      
 	public function doSomething() {

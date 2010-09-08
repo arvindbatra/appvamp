@@ -16,11 +16,20 @@ class Template
 		$this->variables[$name] = $value;
 	}
 
+	function get($key, $defaultValue)
+	{
+		if(array_key_exists($key, $this->variables))
+		{
+		  	return $this->variables[$key];
+		}
+		
+		return $defaultValue;
+	}
+
 	function render()
 	{
 		$this->loadThemes();
 	
-
 	}
 
 
