@@ -49,7 +49,7 @@ class AppInfo
 			$imageArr  = preg_split("/\t/", $image);
 			if(count($imageArr) == 2)
 			{
-			  	$logger->debug($imageArr[1]);
+			  	//$logger->debug($imageArr[1]);
 				$this->screenshotsArr[$scount] = $imageArr[1];
 				$scount++;
 			}

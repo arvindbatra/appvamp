@@ -17,25 +17,27 @@
 	<div class="header" >
 		<h1> <a href="/"> The <b>AppVamp</b></a></h1>
 		<div class="generic-info">
-			<i>I am the App Vamp!</i>
+			<i>I am the App Vamp!</i> <br/> <br/>
+			<p align="center">
+				<a href="http://www.twitter.com/appvamp"><img src="http://twitter-badges.s3.amazonaws.com/t_logo-a.png" alt="Follow appvamp on Twitter" height="35px"/></a> &nbsp;
+				<a name="fb_share" type="name_button" href="http://www.facebook.com/sharer.php"><img  height="35px" src="http://profile.ak.fbcdn.net/hprofile-ak-snc4/hs624.snc3/27535_20531316728_5553_q.jpg" alt="Share Appvamp on facebook"/></a><!--script src="http://static.ak.fbcdn.net/connect.php/js/FB.Share" type="text/javascript"></script-->
+			</p>
 		</div>
+	</div>
+	<div class="header-box" >
+		<ul class="nav">
+			<li><a href="/">App of the day</a></li>
+			<li><a href="#">So just what is a Vamp ?</a></li>
+			<li><a href="#">The Team</a></li>
+			<li><a href="#">Reach out and Touch Me</a></li>
+		</ul>
+
+		<div class="device-selection" >
+			<b>iPhone/iPad</b>
 		</div>
 
-		<div class="header-box" >
-			<ul class="nav">
-				<li><a href="/">App of the day</a></li>
-				<li><a href="#">So just what is a Vamp ?</a></li>
-				<li><a href="#">The Team</a></li>
-				<li><a href="#">Reach out and Touch Me</a></li>
-			</ul>
 
-		
-			<div class="device-selection" >
-				<b>iPhone/iPad</b>
-			</div>
-
-
-		</div>
+	</div>
 	<!--div class="container-header-dark-normal"><span></span></div-->
 
 	</div>

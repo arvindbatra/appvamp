@@ -62,8 +62,11 @@
 		<p align="left"> 	Previous Posts </p>
 			<?php foreach($previousPostsArr as $previousPost) { ?>
 			  		<div class="previous-posts">
-						<img src="<?php echo $previousPost->appInfo->imageUrl?>" alt="<?php echo $previousPost->appInfo->appName; ?>" /> <br/>
-						<a href="/app/<?php echo $previousPost->appInfo->appName; ?>"><?php echo $previousPost->appInfo->appName; ?></a>
+						<img src="<?php echo $previousPost->appInfo->imageUrl?>" alt="<?php echo $previousPost->appInfo->appName; ?>" > 
+						<div>
+							<a href="/app/<?php echo $previousPost->appInfo->appName; ?>"><?php echo $previousPost->appInfo->appName; ?></a>
+						</div>
+						</img>
 					</div>
 			<?php } ?>
 		</div>

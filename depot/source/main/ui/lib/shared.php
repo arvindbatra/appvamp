@@ -57,6 +57,7 @@ function route()
 	setReporting();
 
 	$logger = AppLogger::getInstance()->getLogger();
+	$qpacket = array();
 	
 	/**read params and then unregisterGlobals()*/
 	$url = '';
@@ -64,32 +65,63 @@ function route()
 	{
 		$url = $_GET['url'];
 	}
+	foreach ($_GET as $key => $value) {
+	  	$logger->debug('Get param: ' . $key.'='.$value);
+		$qpacket[$key] = $value;
+	}
+	foreach ($_POST as $key => $value) {
+	  	$logger->debug('Post param: ' . $key.'='.$value);
+		$qpacket[$key] = $value;
+	}
+	$qpacket["url"] = $url;
+	$action = 'view';
+	$qpacket["action"] = $action;
+	$urlVars = preg_split("/\//", $url);
+
+	for($i = 0; $i< count($urlVars); $i++)
+	{
+		$logger->debug('attribute_'. $i . "=" . $urlVars[$i] );
+		if(empty($urlVars[$i]))
+		  	continue;
+		$qpacket['attribute_'.$i] = $urlVars[$i];
+	}
 
 	removeMagicQuotes();
 	unregisterGlobals();
 
-	$qpacket = array();
-	$qpacket["url"] = $url;
-	$logger->info('url:' . $url);
+	$allControllers = array("app", "admin");
 
 	$controllerName = getController($qpacket);
+	if(!in_array($controllerName, $allControllers))
+	{
+	 	$logger->error("Unknown controller name (" . $controllerName . ")found");
+	  	return;
+	}
+
+
+	
 	$controllerName .= 'Controller';
 	$qpacket['controllerName'] = $controllerName;
-	//echo "controller: $controllerName <br>";
 	$dispatch = new $controllerName ($qpacket);
-	$action = 'view';
+	if(array_key_exists('action',$qpacket)) {
+		$action = $qpacket['action'];
+	}
+	$logger->debug("action is " . $action);
 	$dispatch->$action();
 }
 
 
 function getController($qpacket)
 {
-	$url = $qpacket["url"];
+	$url = '';
+	
+	if(array_key_exists('attribute_0', $qpacket)) {
+		$url = $qpacket['attribute_0'];
+	}
 
-//	if(empty($url)) { 
+	if(empty($url)) { 
 		$url = "app";
-//	}
-//	echo "url:" . $url ."<br>";
+	}
 	return $url;
 }
 

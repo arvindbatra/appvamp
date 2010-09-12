@@ -33,7 +33,7 @@ Enter app name: <INPUT NAME="app_name" SIZE="100" value="<?php if(isset($app_nam
 			<div class="curved-box">
 				<?php	print_app_info($fetchAppInfo); ?>
 			</div>
-			<form name="submit_review" action="submit_review" method="POST">
+			<form name="submit_review" action="submit_review" method="POST" >
 				AppName: <INPUT NAME="app_name" SIZE="100" value="<?php echo $fetchAppInfo->appName;?>" /><BR>
 				AppId: <INPUT NAME="app_id" SIZE="100" value="<?php echo $fetchAppInfo->id;?>" /><BR>
 				Reviewer: <INPUT NAME="app_reviewer" SIZE="100" value="<?php if(isset($app_reviewer)) echo $app_reviewer;?>" /><BR>

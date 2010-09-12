@@ -36,7 +36,7 @@ class AppController extends Controller
 		if(isset($featuredPost)) {
 			$this->set('featuredPost', $featuredPost);
 			$date = $featuredPost->onDate;
-			$previousPostsArr = $appModel->getPreviousPostsFromDate($date, 5);
+			$previousPostsArr = $appModel->getPreviousPostsFromDate($date, 6);
 			if(isset($previousPostsArr))
 			{
 				$this->logger->debug('Found previous posts size:' . count($previousPostsArr));
