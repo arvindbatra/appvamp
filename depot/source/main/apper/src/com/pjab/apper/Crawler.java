@@ -86,7 +86,8 @@ public class Crawler implements Runnable{
 	{
 		if(m_seenURLs.containsKey(curURLInfo.m_url))
 			return "";
-		
+	
+		try {
 		int processQSize = m_processQueue.size();
 
 		System.out.println("Processing url " + curURLInfo.toString() + "Remainiing urls:" + processQSize);
@@ -148,8 +149,14 @@ public class Crawler implements Runnable{
 			
 			
 		}
+
+		}catch (Exception e)
+		{
+			System.out.println("Crawl Exception " + e.getMessage());
+
+		}
 		return "";
-		
+				
 			
 	}
 	
