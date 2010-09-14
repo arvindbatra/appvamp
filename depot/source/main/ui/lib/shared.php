@@ -1,5 +1,7 @@
 <?php
 
+include_once(VIEWS_DIR. DS . 'common-functions.php');
+
 /** Check if environment is development and display errors **/
 
 function setReporting() 
@@ -83,7 +85,7 @@ function route()
 		$logger->debug('attribute_'. $i . "=" . $urlVars[$i] );
 		if(empty($urlVars[$i]))
 		  	continue;
-		$qpacket['attribute_'.$i] = $urlVars[$i];
+		$qpacket['attribute_'.$i] = parse_seo_string($urlVars[$i]);
 	}
 
 	removeMagicQuotes();

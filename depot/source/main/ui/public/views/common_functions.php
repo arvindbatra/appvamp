@@ -34,7 +34,20 @@ function print_post_info($post)
 	  
 }
 
+function get_seo_string($string)
+{
+  	$string = trim($string);
+	$newS = str_replace(" ", "-", $string);
+	return $newS;
 
+}
+
+function parse_seo_string($string)
+{
+	$newS = str_replace("-", " ", $string);
+	return $newS;
+
+}
 
 
 ?>

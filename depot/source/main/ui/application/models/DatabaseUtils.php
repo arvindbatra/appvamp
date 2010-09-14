@@ -8,9 +8,9 @@ class DatabaseUtils
 		return self::queryAppInfo($dbHandle, $query);
 	}
 	
-	public static function getPostData($dbHandle, $appName)
+	public static function getPostData($dbHandle, $appName, $appDate)
 	{
-		$query = "select * from AppLine where app_name='$appName';";
+		$query = "select * from AppLine where app_name='$appName' and on_date='$appDate';";
 		return self::queryAppLine($dbHandle, $query);
 	}	
 	

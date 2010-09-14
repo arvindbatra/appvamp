@@ -6,10 +6,29 @@ class AppController extends Controller
 	function __construct(&$qpacket)
 	{
 		parent::__construct($qpacket);
+		$y = '';
+		$m = '';
+		$d = '';
+		if(array_key_exists('attribute_1', $qpacket)) {
+			$y = $qpacket['attribute_1'];
+		}
+		if(array_key_exists('attribute_2', $qpacket)) {
+			$m = $qpacket['attribute_2'];
+		}
+		if(array_key_exists('attribute_3', $qpacket)) {
+			$d = $qpacket['attribute_3'];
+		}
+
+		$date = $y.'-'.$m.'-'.$d;
+		$this->logger->info("Setting appDate:". $date);
+		$this->set('appDate', $date);
+
+
+		
 	
-		if(array_key_exists('attribute_1', $qpacket))
+		if(array_key_exists('attribute_4', $qpacket))
 		{
-			$appName = $qpacket['attribute_1'];
+			$appName = $qpacket['attribute_4'];
 			$this->logger->info("Setting appName:". $appName);
 			$this->set('appName', $appName);
 		}
@@ -22,6 +41,7 @@ class AppController extends Controller
 
 		$appModel = new AppModel();
 		$appName = $this->get('appName','');
+		$appDate = $this->get('appDate', '');
 		//$featuredPost = $appModel->getAppPost();
 		if(empty($appName))
 		{
@@ -29,8 +49,8 @@ class AppController extends Controller
 			$featuredPost = $appModel->getAppPostOfTheDay(null);
 		}else
 		{
-			$this->logger->info("Getting app post" . $appName);
-			$featuredPost = $appModel->getAppPost($appName);
+			$this->logger->info("Getting app post" . $appName . ' with date' . $appDate);
+			$featuredPost = $appModel->getAppPost($appName, $appDate);
 		}
 
 		if(isset($featuredPost)) {

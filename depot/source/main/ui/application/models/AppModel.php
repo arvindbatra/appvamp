@@ -42,11 +42,11 @@ class AppModel
 		return $postArr;
 	}
 
-	public function getAppPost($appName)
+	public function getAppPost($appName, $appDate)
 	{
 
 	  	$dbHandle = DatabaseHandler::getInstance()->getHandle();
-		$postArr = DatabaseUtils::getPostData($dbHandle, $appName);
+		$postArr = DatabaseUtils::getPostData($dbHandle, $appName, $appDate);
 
 		if(count($postArr) > 0)
 		{

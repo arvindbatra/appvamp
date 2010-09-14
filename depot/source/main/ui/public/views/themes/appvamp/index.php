@@ -64,7 +64,9 @@
 			  		<div class="previous-posts">
 						<img src="<?php echo $previousPost->appInfo->imageUrl?>" alt="<?php echo $previousPost->appInfo->appName; ?>" > 
 						<div>
-							<a href="/app/<?php echo $previousPost->appInfo->appName; ?>"><?php echo $previousPost->appInfo->appName; ?></a>
+							<a href="/app/<?php $mdate = $previousPost->onDate; echo date('Y/m/d', strtotime($mdate)); ?>/<?php echo (get_seo_string($previousPost->appInfo->appName)); ?>">
+								<?php echo $previousPost->appInfo->appName; ?>
+							</a>
 						</div>
 						</img>
 					</div>
