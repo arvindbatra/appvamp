@@ -10,7 +10,10 @@ class DatabaseUtils
 	
 	public static function getPostData($dbHandle, $appName, $appDate)
 	{
-		$query = "select * from AppLine where app_name='$appName' and on_date='$appDate';";
+		$appName = mysql_real_escape_string($appName);
+		$appDate = mysql_real_escape_string($appDate);
+
+	  	$query = "select * from AppLine where app_name='$appName' and on_date='$appDate';";
 		return self::queryAppLine($dbHandle, $query);
 	}	
 	
@@ -46,6 +49,8 @@ class DatabaseUtils
 	
 	public static function getPreviousPostsFromDate($dbHandle, $date, $numPosts)
 	{
+		$date = mysql_real_escape_string($date);
+		$numPosts = mysql_real_escape_string($numPosts);
 		$query = "select * from AppLine where on_date<'$date' order by on_date desc limit $numPosts";
 		return self::queryAppLine($dbHandle, $query);
 	}
@@ -102,6 +107,7 @@ class DatabaseUtils
 	
 	public static function queryAppInfoByName($dbHandle, $name)
 	{
+		$name = mysql_real_escape_string($name);
 		$query = "select * from AppInfo where app_name='$name';";
 		return self::queryAppInfo($dbHandle, $query);
 
@@ -109,6 +115,7 @@ class DatabaseUtils
 	
 	public static function queryAppInfoByUrl($dbHandle, $url)
 	{
+		$url = mysql_real_escape_string($url);
 		$query = "select * from AppInfo where orig_link like '%$url%';";
 		return self::queryAppInfo($dbHandle, $query);
 
@@ -116,6 +123,7 @@ class DatabaseUtils
 	
 	public static function queryAppInfoById($dbHandle, $id)
 	{
+		$id = mysql_real_escape_string($id);
 		$query = "select * from AppInfo where id=$id;";
 		return self::queryAppInfo($dbHandle, $query);
 
@@ -123,6 +131,7 @@ class DatabaseUtils
 	
 	public static function queryAppReviewsById($dbHandle, $id)
 	{
+		$id = mysql_real_escape_string($id);
 		$query = "select * from AppReviews where id=$id;";
 		return self::queryAppReviews($dbHandle, $query);
 
