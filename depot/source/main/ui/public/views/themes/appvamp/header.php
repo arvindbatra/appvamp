@@ -27,14 +27,14 @@
 	<div class="header-box" >
 		<ul class="nav">
 			<li><a href="/">App of the day</a></li>
-			<li><a href="#">So just what is a Vamp ?</a></li>
-			<li><a href="#">The Team</a></li>
-			<li><a href="#">Reach out and Touch Me</a></li>
+			<li><a href="/about/so-just-what-is-a-vamp">So just what is a Vamp ?</a></li>
+			<li><a href="/about/the-team">The Team</a></li>
+			<li><a href="/about/reach-out-and-touch-me">Reach out and Touch Me</a></li>
 		</ul>
 
-		<div class="device-selection" >
+		<!--div class="device-selection" >
 			<b>iPhone/iPad</b>
-		</div>
+		</div-->
 
 
 	</div>

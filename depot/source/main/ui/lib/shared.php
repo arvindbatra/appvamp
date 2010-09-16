@@ -91,7 +91,7 @@ function route()
 	removeMagicQuotes();
 	unregisterGlobals();
 
-	$allControllers = array("app", "admin");
+	$allControllers = array("app", "admin","about");
 
 	$controllerName = getController($qpacket);
 	if(!in_array($controllerName, $allControllers))

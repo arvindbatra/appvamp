@@ -1,7 +1,7 @@
 <div class="dark-grey">
 	<div id="body-container" >
+		<?php if(isset($featuredPost)) { ?>
 		<div class="body-box clearfix">
-			<?php if(isset($featuredPost)) { ?>
 			<div class="featured clearfix">
 				<div class="featured-image">
 					<h4> <i><?php $date = $featuredPost->onDate;
@@ -55,8 +55,9 @@
 					</div>
 				</div>
 			</div>	<!--end post body-->
-			<?php } ?> <!-- end featured post check-->
 		</div>	<!--end body box-->
+		
+		
 		<?php if(isset($previousPostsArr)) { ?>
 		<div class="body-box clearfix">
 		<p align="left"> 	Previous Posts </p>
@@ -72,6 +73,11 @@
 					</div>
 			<?php } ?>
 		</div>
-		<?php }?>
+		<?php }?> <!-- end previousPostsArr check-->
+		<?php } ?> <!-- end featured post check-->
+		<div class="body-box clearfix">
+			<?php if(isset($showAboutType)) include_once(get_seo_string($showAboutType) . '.php'); ?>
+		
+		</div>
 	</div>	<!-- end body-container -->
 </div>		<!-- end dark-grey-->
