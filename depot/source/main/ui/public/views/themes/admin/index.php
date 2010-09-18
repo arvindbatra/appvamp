@@ -51,7 +51,7 @@ Enter app name: <INPUT NAME="app_name" SIZE="100" value="<?php if(isset($app_nam
 
 <?php
 
-if((strcmp($action, "view_schedule") == 0)|| (strcmp($action,"fetch_schedule") == 0) || (strcmp($action,"add_schedule") == 0) || (strcmp($action,"update_schedule") == 0))  { ?>
+if((strcmp($action, "view_schedule") == 0)|| (strcmp($action,"fetch_review") == 0) || (strcmp($action,"fetch_schedule") == 0) || (strcmp($action,"add_schedule") == 0) || (strcmp($action,"update_schedule") == 0))  { ?>
 
 
 	<form name="fetch_schedule" action="fetch_schedule" method="GET">
@@ -77,7 +77,24 @@ if((strcmp($action, "view_schedule") == 0)|| (strcmp($action,"fetch_schedule") =
 			</table>
 	</div>
 	<?php } ?>
-
+	<form name="fetch_review" action="fetch_review" method="GET">
+		Enter app name: <INPUT NAME="app_name" SIZE="100" value="<?php if(isset($app_name)) echo $app_name;?>"/ > <BR>
+		<input type="submit" value="Fetch Review" />
+	</form>
+	<?php if(isset($appReviewArr)) { ?>
+		<div class="curved-box">
+			<table>
+				<tr>	<td> AppName</td>
+						<td> Review-Id </td>
+						<td> Review </td>
+				</tr>
+				<?php foreach ($appReviewArr as $appReview) { ?>
+				  	<tr> <?php print_review_info($appReview) ?>
+					</tr>
+				<?php }?>
+			</table>
+		</div>
+	<?php } ?>
 
 	<form name="add_schedule" action="add_schedule" mehthod="GET">
 		App Name: <Input name="app_name" size="40" value="<?php if(isset($app_name)) echo $app_name; ?>" /><BR>

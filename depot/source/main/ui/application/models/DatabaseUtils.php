@@ -128,7 +128,13 @@ class DatabaseUtils
 		return self::queryAppInfo($dbHandle, $query);
 
 	}
-	
+
+	public static function queryAppReviewsByName($dbHandle, $name)
+	{
+		$name = mysql_real_escape_string($name);
+		$query = "select * from AppReviews where app_name like '%$name%';";
+		return self::queryAppReviews($dbHandle, $query);
+	}
 	public static function queryAppReviewsById($dbHandle, $id)
 	{
 		$id = mysql_real_escape_string($id);

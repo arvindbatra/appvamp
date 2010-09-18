@@ -86,13 +86,20 @@ class AppModel
 	}
 	public function getAppInfoByUrl($appUrl)
 	{
-	  	$dbHandle = DatabaseHandler::getInstance()->getHandle();
+		$dbHandle = DatabaseHandler::getInstance()->getHandle();
 		$appInfoArr = DatabaseUtils::queryAppInfoByUrl($dbHandle, $appUrl);
 		if(count($appInfoArr) > 0)
 		{
 		  	return $appInfoArr[0];
 		}
 		return null;
+	}
+
+	public function getAppReviews($appName)
+	{
+	  	$dbHandle = DatabaseHandler::getInstance()->getHandle();
+		$appReviewArr =  DatabaseUtils::queryAppReviewsByName($dbHandle, $appName);
+		return $appReviewArr;	
 	}
 
 	public function insertAppReview($appId, $appName, $reviewer, $reviewTitle, $review)

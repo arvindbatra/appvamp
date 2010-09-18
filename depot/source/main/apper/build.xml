@@ -84,6 +84,7 @@
 
 	<target name="urlsourcer" depends="jar">
 		  <java fork="true" classname="com.pjab.apper.tests.UrlSourceReader" >
+		  <jvmarg value="-Xmx2048m" />
             <classpath>
                 <path refid="classpath"/>
                 <path location="${jar.dir}/Apper.jar"/>

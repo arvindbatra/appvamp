@@ -28,12 +28,25 @@ function print_post_info($post)
 	?> 
 	<td> <?php echo $post->appName; ?> </td>
 	<td> <?php echo $post->onDate;?> </td>
-	<td> <?php echo $post->appReview->id;?> </td>
+	<td> <?php echo $post->appReview->id ;?> </td>
 	<?php
 	
 	  
 }
 
+function print_review_info($rev)
+{
+  	
+  	if(!isset($rev))
+	  	return;
+	?> 
+	<td> <?php echo $rev->appName; ?> </td>
+	<td> <?php echo $rev->id;?> </td>
+	<td> <?php echo substr($rev->review, 0 , 200);?> </td>
+	<?php
+	
+	  
+}
 function get_seo_string($string)
 {
   	$string = trim($string);

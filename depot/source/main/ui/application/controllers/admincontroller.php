@@ -106,6 +106,24 @@ class AdminController extends Controller
 		//$this->_template->render();
 
 	}
+	
+	public function fetch_review()
+	{
+		$this->set('title', 'Fetch reviews');
+		$appModel = new AppModel();
+		$appName = $this->get('app_name', '');
+		if(isset($appName))
+		{
+		  	$this->logger->info("Querying db for app " . $appName);
+			$appReviewArr = $appModel->getAppReviews($appName);
+			if(isset($appReviewArr))
+				$this->set('appReviewArr', $appReviewArr);
+		}
+
+
+	}
+
+
 
 	public function submit_review()
 	{

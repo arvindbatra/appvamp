@@ -75,9 +75,10 @@
 		</div>
 		<?php }?> <!-- end previousPostsArr check-->
 		<?php } ?> <!-- end featured post check-->
-		<div class="body-box clearfix">
-			<?php if(isset($showAboutType)) include_once(get_seo_string($showAboutType) . '.php'); ?>
-		
-		</div>
+		<?php if(isset($showAboutType)) { ?>
+			<div class="body-box clearfix">
+				<?php include_once(get_seo_string($showAboutType) . '.php'); ?>
+			</div> 
+		<?php } ?>
 	</div>	<!-- end body-container -->
 </div>		<!-- end dark-grey-->

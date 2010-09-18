@@ -6,8 +6,8 @@
 	<div class="footer clearfix">
 		&copy AppVamp
 			<ul class="nav"  >
-				<li><a href="#">Contact</a></li>
-				<li><a href="#">About</a></li>
+				<li><a href="/about/reach-out-and-touch-me">Contact</a></li>
+				<li><a href="/about/the-team">About</a>
 				<li><a href="#">Terms of Service</a></li>
 			</ul>
 

@@ -32,9 +32,9 @@
 			<li><a href="/about/reach-out-and-touch-me">Reach out and Touch Me</a></li>
 		</ul>
 
-		<!--div class="device-selection" >
+		<div class="device-selection" >
 			<b>iPhone/iPad</b>
-		</div-->
+		</div>
 
 
 	</div>
