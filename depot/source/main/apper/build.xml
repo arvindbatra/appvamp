@@ -43,6 +43,14 @@
             </classpath>
         </java>
     </target>
+    <target name="categorize" depends="jar">
+		  <java fork="true" classname="com.pjab.apper.AppCategorizer">
+            <classpath>
+                <path refid="classpath"/>
+                <path location="${jar.dir}/Apper.jar"/>
+            </classpath>
+        </java>
+    </target>
     
     <target name="parse" depends="jar">
 		  <java fork="true" classname="com.pjab.apper.AppParser" output="parseout.txt" error="parseerr.txt">

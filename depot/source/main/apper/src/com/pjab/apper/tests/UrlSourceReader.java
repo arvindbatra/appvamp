@@ -109,14 +109,15 @@ public class UrlSourceReader
 	
 	public static void main(String[] args) throws Exception
 	{
-		String filename = "data/top50appslist.txt";
+		//String filename = "data/top50appslist.txt";
+		String filename = "data/popular.txt";
 		Properties prop = Utils.loadProperties("default.properties");		
 
 		UrlSourceReader reader = new UrlSourceReader(prop);
 
 		
-		//reader.readURLs(filename);
-		//reader.getApps();
+		reader.readURLs(filename);
+		reader.getApps();
 		reader.parseFiles();
 	}
 

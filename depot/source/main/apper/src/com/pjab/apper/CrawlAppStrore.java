@@ -3,16 +3,21 @@ package com.pjab.apper;
 
 import com.pjab.apper.URLInfo;
 import com.pjab.apper.ApperConstants;
+import com.pjab.apper.DatabaseConfig;
+import com.pjab.apper.DatabaseUtils;
+import java.sql.Connection;
 
 
 import java.util.Properties;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class CrawlAppStrore {
 	
-	public static final String SEED_URL = "http://itunes.apple.com/us/genre/mobile-software-applications/id7003";
+	//public static final String SEED_URL = "http://itunes.apple.com/us/genre/mobile-software-applications/id7003";
+	public static final String SEED_URL = "http://itunes.apple.com/us/app/chad-ochocinco-official-hd/id380481547";
 	public static final int MAX_CRAWL_DEPTH = 5;
 	
 	
@@ -26,10 +31,18 @@ public class CrawlAppStrore {
 		 	int depth = MAX_CRAWL_DEPTH;
 		 	String seedURL = SEED_URL;
 			System.out.println("Calling crawl with url " + seedURL + " and maxDepth:" + depth);
+			Connection conn = DatabaseConfig.getInstance().getConnection();
+			List<String> seenApps = DatabaseUtils.getAllAppUrls(conn);
 
 			ConcurrentLinkedQueue<URLInfo>processQueue = new ConcurrentLinkedQueue<URLInfo>();
 			ConcurrentHashMap<String, Boolean> seenURLs = new ConcurrentHashMap<String, Boolean>();
 			
+			for(int i=0; i<seenApps.size(); i++)
+			{
+				
+				seenURLs.put(seenApps.get(i), true);
+
+			}
 			URLInfo newURLInfo = new URLInfo(seedURL,"",0);
 			processQueue.add(newURLInfo);
 			

@@ -1,5 +1,8 @@
 package com.pjab.apper;
 
+
+import com.pjab.apper.*;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -7,6 +10,7 @@ import java.sql.Statement;
 import java.sql.ResultSet;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Vector;
 import java.util.Map;
 import java.util.Date;
 import java.text.SimpleDateFormat;
@@ -156,15 +160,71 @@ public class DatabaseUtils
 			 success  = false;
 		}
 		
-		
-		
-		
-		
-		
 		return success;
 		
 	}
 	
+	public static List<String> getAllAppUrls(Connection conn)
+	{
+		if (conn == null)
+			return null;
 	
+		List<String> urls = new Vector<String>();
+
+		String query = "select orig_link from AppInfo";
+		try
+		{
+			Statement stmt = conn.createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			while(rs.next())
+			{
+				String url = rs.getString("orig_link");
+				urls.add(url);
+			};
+
+		}catch (SQLException e)
+		{
+			 e.printStackTrace();
+		}
+		
+		return urls;
+	}
+
+	public static List< AppInfo > getAllAppData(Connection conn)
+	{
+		if (conn == null)
+			return null;
+	
+		List<AppInfo> apps = new Vector<AppInfo>();
+
+		String query = "select * from AppInfo  limit 10";
+		try
+		{
+			Statement stmt = conn.createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			while(rs.next())
+			{
+				AppInfo ai = new AppInfo();
+				String appName = rs.getString("app_name");
+				String description = rs.getString("description");
+				String seller = rs.getString("seller");
+				String genre = rs.getString("genre");
+				ai.data.put("name", appName);
+				ai.data.put("description", description);
+				ai.data.put("seller", seller);
+				ai.data.put("genre", genre);
+				apps.add(ai);
+			};
+
+		}catch (SQLException e)
+		{
+			 e.printStackTrace();
+		}
+
+		return apps;
+		
+		
+	}
+
 
 }
