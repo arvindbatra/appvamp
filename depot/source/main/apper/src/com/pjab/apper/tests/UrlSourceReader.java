@@ -116,8 +116,8 @@ public class UrlSourceReader
 		UrlSourceReader reader = new UrlSourceReader(prop);
 
 		
-		reader.readURLs(filename);
-		reader.getApps();
+		//reader.readURLs(filename);
+		//reader.getApps();
 		reader.parseFiles();
 	}
 

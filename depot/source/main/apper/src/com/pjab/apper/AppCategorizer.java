@@ -125,10 +125,17 @@ public class AppCategorizer
 				System.err.println(e.toString());
 				e.printStackTrace();
 			}
+			
 			httpclient.getConnectionManager().shutdown();
 		}catch(UnsupportedEncodingException e)
 		{
 			System.err.println(e.getMessage());
+		}
+		catch (Exception e)
+		{
+				System.err.println(e.toString());
+				e.printStackTrace();
+
 		}
 
 		return null;
@@ -160,15 +167,21 @@ public class AppCategorizer
 			if(catData.length() > 2000) //Get limit
 				catData = catData.substring(0,1999);
 			JsonObject obj= cat.categorize(text);
-			if(obj != null)
+			name = name.replace('/', '_');
+			name = name.replace(' ', '-');
+			if(obj != null && obj.has("categories"))
 			{
 				obj.addProperty("name", name);
-				obj.addProperty("catData", catData);
+				//obj.addProperty("catData", catData);
 				obj.addProperty("genre", genre);
 				obj.addProperty("seller", seller);
 				String appFileName =  appCatDir + "/" + name;
     			Utils.printToFile(appFileName, obj.toString());
+
+				Thread.sleep(250);
 			}
+			else
+				System.err.println("Cat failed for app name: " + name); 
 
 
 

@@ -47,17 +47,19 @@ public class DatabaseUtils
 			}
 			
 		}
-		String query = "select * from AppInfo where  app_name=\'" + map.get("title") + "\';";
+		String appName = map.get("title");
+		appName = appName.replaceAll("'", "");
+		String query = "select * from AppInfo where  app_name=\'" + appName + "\';";
 		System.out.println(query);
 		try {
 			PreparedStatement stmt = conn.prepareStatement("select * from AppInfo where app_name = ? ;"); 
-			stmt.setString(1,map.get("title"));	
+			stmt.setString(1,appName);	
 			ResultSet rs = stmt.executeQuery(query);
 			if(rs.next())
 			{
 			  	//found a result
 				rs.close();
-				System.out.println("App " + map.get("title") + " was found in db, not writing again");
+				System.out.println("App " + appName + " was found in db, not writing again");
 				return true;
 			}
 			else
@@ -106,6 +108,7 @@ public class DatabaseUtils
 		}
 		
 		String appName = map.get("title");
+		appName = appName.replaceAll("'", "");
 		String seller = map.get("seller");
 		//TODO 	String app_exernal_id =- " app_external_id VARCHAR(20), " +
 		String releaseDate = map.get("release_date");
@@ -197,7 +200,7 @@ public class DatabaseUtils
 	
 		List<AppInfo> apps = new Vector<AppInfo>();
 
-		String query = "select * from AppInfo  limit 10";
+		String query = "select * from AppInfo   ";
 		try
 		{
 			Statement stmt = conn.createStatement();
