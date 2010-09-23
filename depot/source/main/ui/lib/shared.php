@@ -1,6 +1,6 @@
 <?php
 
-include_once(VIEWS_DIR. DS . 'common-functions.php');
+include_once(VIEWS_DIR. DS . 'common_functions.php');
 
 /** Check if environment is development and display errors **/
 
