@@ -37,7 +37,7 @@ public class AppCatInfo
 		if(obj.has("name"))
 			appCatInfo.appName = obj.get("name").getAsString();
 		
-		System.out.println("Proceesing app: " +  appCatInfo.appName);
+		//System.out.println("Proceesing app: " +  appCatInfo.appName);
 		if(appCatInfo.appName.isEmpty())
 			return null;
 
