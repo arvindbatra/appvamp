@@ -212,10 +212,12 @@ public class DatabaseUtils
 				String description = rs.getString("description");
 				String seller = rs.getString("seller");
 				String genre = rs.getString("genre");
+				int id = rs.getInt("id");
 				ai.data.put("name", appName);
 				ai.data.put("description", description);
 				ai.data.put("seller", seller);
 				ai.data.put("genre", genre);
+				ai.data.put("id", String.valueOf(id));
 				apps.add(ai);
 			};
 
@@ -225,6 +227,43 @@ public class DatabaseUtils
 		}
 
 		return apps;
+		
+		
+	}
+	
+	public static AppInfo getAppDataByName(Connection conn, String appName)
+	{
+		if (conn == null)
+			return null;
+	
+		appName = appName.replaceAll("'", "");
+
+		String query = "select * from AppInfo where  app_name=\'" + appName + "\';";
+		try
+		{
+			Statement stmt = conn.createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			while(rs.next())
+			{
+				AppInfo ai = new AppInfo();
+				String description = rs.getString("description");
+				String seller = rs.getString("seller");
+				String genre = rs.getString("genre");
+				int id = rs.getInt("id");
+				ai.data.put("name", appName);
+				ai.data.put("description", description);
+				ai.data.put("seller", seller);
+				ai.data.put("genre", genre);
+				ai.data.put("id", String.valueOf(id));
+				return ai;
+			};
+
+		}catch (SQLException e)
+		{
+			 e.printStackTrace();
+		}
+
+		return null;
 		
 		
 	}

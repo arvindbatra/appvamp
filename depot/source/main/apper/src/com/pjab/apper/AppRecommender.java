@@ -1,6 +1,7 @@
 
 package com.pjab.apper;
 import java.util.Properties;
+import java.sql.Connection;
 
 
 import java.io.BufferedWriter;
@@ -12,6 +13,11 @@ import java.util.*;
 import java.lang.*;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileReader;
+import java.io.FileInputStream;
+import java.io.FileWriter;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -391,35 +397,82 @@ public class AppRecommender
 	}
 
 	
-	public void recommendApps()
+	public void recommendApps( BufferedWriter out) throws Exception
 	{
+		
 		for(int i=0; i<apps.size(); i++)
 		{
 			AppCatInfo aci = apps.get(i);
+			int dbId = getAppId(aci.appName, aci.seller);
+			//out.write(aci.appName + "\t" + aci.seller + "\t" + aci.genre + "\t" + dbId + "\n" );
+			out.write( dbId +":" );
+
 			System.out.println("Processing app" + aci.appName);
-			getAppRecommendations(aci);
+			List<SimilarAppInfo> similarList = getAppRecommendations(aci);
+
+			for(int s=0; s<similarList.size() && s<15; s++)
+			{
+				SimilarAppInfo sai = similarList.get(s);
+				AppCatInfo sim = apps.get(sai.appIndex);
+				int sdbId = getAppId(sim.appName, sim.seller);
+
+
+				//out.write("\t" + sim.appName + "\t" + sim.seller + "\t" + sim.genre + "\t" + sdbId +  "\n");
+				out.write( sdbId +  "\t");
+			}
+			out.write("\n");
+
 		}
 			
 	}
 
 
+	public static Map<String, Integer> dbLookup = new HashMap<String, Integer>();
 
+	public static int getAppId(String name, String seller)
+	{
+		if(dbLookup.containsKey(name))
+			return dbLookup.get(name);
+
+		Connection conn = DatabaseConfig.getInstance().getConnection();
+		AppInfo ai = DatabaseUtils.getAppDataByName(conn,name);
+		
+		if(ai == null)
+		{
+			dbLookup.put(name, -1);
+			return -1;
+		}
+
+		else
+		{
+			dbLookup.put(name, Integer.valueOf(ai.data.get("id")));
+			return Integer.valueOf(ai.data.get("id"));
+		}
+	}
+	
 
 	public static void main(String [] args) throws Exception
 	{
+		Connection conn = DatabaseConfig.getInstance().getConnection();
 		Properties prop = Utils.loadProperties("default.properties");		
-		String catFile = "app_cat/Kubb";
-		
-		AppRecommender reco = new AppRecommender();
+
 		//String catDir = prop.getProperty(ApperConstants.OUTPUT_SMALL_CAT_DIR);
 		String catDir = prop.getProperty(ApperConstants.OUTPUT_CAT_DIR);
+		String recoFile = prop.getProperty(ApperConstants.OUTPUT_RECO_FILE);
+		FileWriter fstream = new FileWriter(recoFile);
+		BufferedWriter out = new BufferedWriter(fstream);
+		
+		
+		AppRecommender reco = new AppRecommender();
 		reco.readApps(catDir);
 		reco.createIndex();
 		//reco.printIndex();
 		reco.purgeExtremesInIndex();
 
 
-		reco.recommendApps();
+		reco.recommendApps(out);
+		
+		out.close();
 
 
 
