@@ -45,7 +45,7 @@
     </target>
     <target name="categorize" depends="jar">
 		  <java fork="true" classname="com.pjab.apper.AppCategorizer" error="caterror.txt">
-		  <jvmarg value="-Xmx2048m" />
+		  <jvmarg value="-Xmx512m" />
             <classpath>
                 <path refid="classpath"/>
                 <path location="${jar.dir}/Apper.jar"/>
@@ -55,7 +55,17 @@
     
 	<target name="reco" depends="jar">
 		  <java fork="true" classname="com.pjab.apper.AppRecommender" error="recoerror.txt">
-		  <jvmarg value="-Xmx2048m" />
+		  <jvmarg value="-Xmx512m" />
+            <classpath>
+                <path refid="classpath"/>
+                <path location="${jar.dir}/Apper.jar"/>
+            </classpath>
+        </java>
+    </target>
+	
+	<target name="persist_reco" depends="jar">
+		  <java fork="true" classname="com.pjab.apper.PersistRecommendation" >
+		  <jvmarg value="-Xmx512m" />
             <classpath>
                 <path refid="classpath"/>
                 <path location="${jar.dir}/Apper.jar"/>

@@ -166,7 +166,41 @@ public class DatabaseUtils
 		return success;
 		
 	}
-	
+
+	public static boolean insertAppReco(Connection conn, int appId, List<Integer> recommendations)
+	{
+		if (conn == null)
+			return false;
+		boolean success = false;
+		try {
+			PreparedStatement stmt = conn.prepareStatement("Insert into AppReco (app_id, recommended_app_id, recommended_app_rank, created_at, updated_at)  values(?,?,?,?,?)");
+			java.util.Date dt = new java.util.Date();
+			java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			String currentTime = sdf.format(dt);
+
+
+			for(int i=0; i<recommendations.size(); i++)
+			{
+				stmt.setInt(1, appId);
+				stmt.setInt(2,recommendations.get(i));
+				stmt.setInt(3,i);
+				stmt.setString(4,currentTime);
+				stmt.setString(5,currentTime);
+			stmt.executeUpdate();
+
+			}
+			success = true;
+		}catch (SQLException e)
+		{
+			 e.printStackTrace();
+			 success  = false;
+		}
+		
+		return success;
+	}
+
+
+
 	public static List<String> getAllAppUrls(Connection conn)
 	{
 		if (conn == null)

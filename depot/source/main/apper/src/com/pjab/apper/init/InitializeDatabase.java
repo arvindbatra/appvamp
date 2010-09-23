@@ -209,6 +209,49 @@ class InitializeDatabase
 
 
 	}
+	
+	private void createTableAppReco(boolean override)
+	{
+		if(conn == null)
+			return;
+		String tablename = "AppReco";
+		boolean exists  = tableExists (tablename);
+		if(exists && !override)
+		{
+			System.out.println("Table exists, returning");
+		  	return;
+		}
+		
+		if(exists)
+			dropTable(tablename);
+
+		String query = "Create TABLE " + tablename  + " ( " + 
+						" id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, " + 
+						" app_id INT NOT NULL, " + 
+						" recommended_app_id INT NOT NULL, " + 
+						" recommended_app_rank INT NOT NULL, " + 
+						" created_at DATETIME, " +
+						" updated_at DATETIME, " +
+						" INDEX (app_id), " + 
+						" FOREIGN KEY (app_id) REFERENCES AppInfo(id), " +
+						" INDEX (recommended_app_id), " + 
+						" FOREIGN KEY (recommended_app_id) REFERENCES AppInfo(id) " +
+						" ) engine=InnoDB;";
+
+
+		System.out.println("Query: " + query);
+		try {
+			Statement  stmt = conn.createStatement();
+			stmt.executeUpdate(query);	
+		}catch (SQLException e)
+		{
+			 e.printStackTrace();
+		}
+						
+
+
+
+	}
 
 
 
@@ -233,9 +276,10 @@ class InitializeDatabase
 		init.connect(ROOT_USER, ROOT_PASSWD);
 		
 
-		init.createTableAppInfo(true);
-		init.createTableAppReviews(true);
-		init.createTableAppLine(true);
+		//init.createTableAppInfo(false);
+		//init.createTableAppReviews(false);
+		//init.createTableAppLine(false);
+		init.createTableAppReco(false);
 
 
 		init.terminate();
