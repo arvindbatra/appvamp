@@ -10,7 +10,7 @@ public class DatabaseConfig
 	private Connection conn = null;
 	private final static String ROOT_USER = "vamp1";
 	private final static String ROOT_PASSWD = "pa551";
-	private final static String SERVER_HOST = "173.230.156.127";
+	private final static String SERVER_HOST = "localhost";
 	private final static String DATABASE_NAME = "ApperDB";
 	
 	protected DatabaseConfig() 

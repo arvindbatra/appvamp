@@ -103,6 +103,13 @@ class DatabaseUtils
 		return $table;
 	}
 
+	public static function queryAppInfosByName($dbHandle, $name)
+	{
+		$name = mysql_real_escape_string($name);
+		$query = "select * from AppInfo where app_name like '%$name%';";
+		return self::queryAppInfo($dbHandle, $query);
+
+	}
 
 	
 	public static function queryAppInfoByName($dbHandle, $name)
@@ -244,6 +251,51 @@ class DatabaseUtils
 			$logger->debug($appReview->toString());
 			$table[$i] = $appReview;
 
+			$i++;
+		}
+
+		mysql_free_result($result);
+		return $table;
+
+
+	}
+
+	public static function getAppRecommendations ($dbHandle, $appId)
+	{
+		$logger = AppLogger::getInstance()->getLogger();
+		$query = "select a.* from AppInfo a, AppReco reco where reco.recommended_app_id = a.id and reco.app_id=$appId  order by reco.recommended_app_rank";
+		$logger->debug('Calling query ' . $query);
+		$result = mysql_query($query, $dbHandle);
+
+		$table = array();
+		if(!isset($result)) {
+			$logger->debug("Returned zero results for query: $query");
+			return $table;
+		}
+
+		$i = 0;
+		while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) 
+		{
+			$appInfo = new AppInfo();
+			$appInfo->appName = $row['app_name'];
+			$appInfo->appSeller = $row['seller'];
+			$appInfo->id = $row['id'];
+			$appInfo->appExternalId = $row['app_external_id'];
+			$appInfo->releaseDate = $row['release_date'];
+			$appInfo->price = $row['price'];
+			$appInfo->originalLink = $row['orig_link'];
+			$appInfo->imageUrl = $row['img_url'];
+			$appInfo->requirements = $row['requirements'];
+			$appInfo->genre = $row['genre'];
+			$appInfo->appRating = $row['app_rating'];
+			$appInfo->screenshots = $row['screenshots'];
+			$appInfo->language = $row['language'];
+			$appInfo->createdAt = $row['created_at'];
+			$appInfo->updatedAt = $row['updated_at'];
+			$appInfo->description = $row['description'];
+			$logger->debug($appInfo->toString());
+			$appInfo->clean();
+			$table[$i] = $appInfo;
 			$i++;
 		}
 

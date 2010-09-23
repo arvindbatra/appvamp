@@ -72,6 +72,13 @@ class AppModel
 		return $resp;
 
 	}
+	
+	public function getAllAppInfosByName($appName)
+	{
+	  	$dbHandle = DatabaseHandler::getInstance()->getHandle();
+		$appInfoArr = DatabaseUtils::queryAppInfosByName($dbHandle, $appName);
+		return $appInfoArr;;
+	}
 
 
 	public function getAppInfo($appName)
@@ -94,6 +101,25 @@ class AppModel
 		}
 		return null;
 	}
+	
+	public function getAppInfoById($appId)
+	{
+		$dbHandle = DatabaseHandler::getInstance()->getHandle();
+		$appInfoArr = DatabaseUtils::queryAppInfoById($dbHandle, $appId);
+		if(count($appInfoArr) > 0)
+		{
+		  	return $appInfoArr[0];
+		}
+		return null;
+	}
+
+	public function getAppRecommendations($appId)
+	{
+		$dbHandle = DatabaseHandler::getInstance()->getHandle();
+		$appInfoArr = DatabaseUtils::getAppRecommendations($dbHandle, $appId);
+		return $appInfoArr;
+	}
+
 
 	public function getAppReviews($appName)
 	{
