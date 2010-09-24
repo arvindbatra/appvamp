@@ -23,7 +23,23 @@ Enter app name: <INPUT NAME="app_name" SIZE="100" value="<?php if(isset($app_nam
 <br/>
 <input type="submit" value="Search Apps" />
 </form>
+<div class="nav" >
+	<ul>
+	<li>
+		 Demo Apps: 
+	</li>
+	<li>
+		<a href="/reco/show/24851" >FunScience</a>
+	</li> <li>
+		<a href="/reco/show/45998" >Pandora radio</a>
+	</li><li>
+		<a href="/reco/show/11828" >Rock Paper Scissors - Fight!</a>
+	</li>
+	</ul>
 
+</div>
+
+<div class="spacer" ></div>
 
 <?php if(isset($fetchAppInfoArr)) { ?>
 	<?php foreach ($fetchAppInfoArr as $ai) {	?> 
@@ -51,17 +67,21 @@ Enter app name: <INPUT NAME="app_name" SIZE="100" value="<?php if(isset($app_nam
 
 <?php if(isset($appRecoArr)) { $i=0; ?>
 	<h2> <b>Similar Apps: </b></h2>
-	<?php foreach($appRecoArr as $reco) { $i++; ?>
-  		<div class="similar-apps">
-			<img src="<?php echo $reco->imageUrl?>" alt="<?php echo $reco->appName; ?>" > 
-			<div>
-				<a href="<?php echo $reco->originalLink ?>" >
-					<?php echo $reco->appName; ?> <br/>
-					<?php echo $reco->appSeller; ?> 
-				</a>
+	<?php if(count($appRecoArr) == 0) { ?>
+	<h4> No recommendations found. We are in the process of building our app vocabulary. Sorry for the inconvenience. Please try some other app. </h4> 
+	<?php } else { ?>
+		<?php foreach($appRecoArr as $reco) { $i++; ?>
+			<div class="similar-apps">
+				<img src="<?php echo $reco->imageUrl?>" alt="<?php echo $reco->appName; ?>" > 
+				<div>
+					<a href="/reco/show/<?php echo $reco->id; ?>" >
+						<?php echo $reco->appName; ?> <br/>
+						<?php echo $reco->appSeller; ?> 
+					</a>
+				</div>
+				</img>
 			</div>
-			</img>
-		</div>
+		<?php } ?>
 	<?php } ?>
 <?php } ?>
 

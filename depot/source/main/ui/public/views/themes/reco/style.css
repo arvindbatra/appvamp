@@ -19,6 +19,25 @@
 
 }
 
+.nav {
+	margin:0;
+	padding-top: 5px;
+	padding-bottom: 25px;
+	float:left;
+	width:100%;
+	font-size: 11pt;
+}
+
+	.nav li {
+		display:inline;
+		padding-left: 4px;
+		margin:0;
+	}
+	.nav a:link, 
+	.nav a:visited {
+		color:#000;
+	#	padding:20px 40px 4px 15px;
+	}
 
 .curved-box {
 	border: 2px solid black;
@@ -49,7 +68,16 @@
 
 }
 .similar-apps img{float: left; width: 100px; height: 100px; padding:5px 10px}
-.similar-apps a{float: left; width: 100px; padding:10px 10px}
+.similar-apps a{
+	color:#000;
+	float: left; width: 100px; 
+#	padding:10px 10px
+}
+.similar-apps .sim a{
+	color:blue;
+	float: left; width: 100px; 
+#	padding:10px 10px
+}
 .similar-apps h4{float: left; width: 100px; padding:5px 5px}
 
 .spacer
