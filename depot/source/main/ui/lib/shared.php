@@ -91,8 +91,8 @@ function route()
 	removeMagicQuotes();
 	unregisterGlobals();
 
-	//$allControllers = array("app", "admin","about", "reco");
-	$allControllers = array( "reco");
+	$allControllers = array("app", "admin","about", "reco");
+	//$allControllers = array( "reco");
 
 	$controllerName = getController($qpacket);
 	if(!in_array($controllerName, $allControllers))
@@ -123,7 +123,8 @@ function getController($qpacket)
 	}
 
 	if(empty($url)) { 
-		$url = "reco";
+		//$url = "reco";
+		$url = "app";
 	}
 	return $url;
 }

@@ -60,7 +60,7 @@
 		
 		<?php if(isset($previousPostsArr)) { ?>
 		<div class="body-box clearfix">
-		<p align="left"> 	Previous Posts </p>
+		<p align="left" ><h3><b>	Previous Posts </b></h3>  </p>
 			<?php foreach($previousPostsArr as $previousPost) { ?>
 			  		<div class="previous-posts">
 						<img src="<?php echo $previousPost->appInfo->imageUrl?>" alt="<?php echo $previousPost->appInfo->appName; ?>" > 
