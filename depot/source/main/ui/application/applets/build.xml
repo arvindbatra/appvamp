@@ -20,6 +20,7 @@
     <target name="jar" depends="compile">
         <mkdir dir="build/jar"/>
         <jar destfile="${jar.dir}/applets.jar" basedir="build/classes">
+			<fileset dir="json" includes="**/*.class"/>
         </jar>
     </target>
     

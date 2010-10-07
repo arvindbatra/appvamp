@@ -53,9 +53,7 @@ public class AppChecker  implements Runnable
 		for(int i=0; i<byteArr.length; i++)
 		{
 			buf.write(byteArr[i]);
-			System.out.print( (char) byteArr[i]);
 		}
-		System.out.println();	
 
 		return Base64.encodeBytes(byteArr);
 		
@@ -139,20 +137,20 @@ public class AppChecker  implements Runnable
 
 			ZipFile zip = new ZipFile(ipaFile);
 			ZipEntry ze = zip.getEntry("iTunesMetadata.plist");
-			System.out.println("parsing ipa file");
+			//System.out.println("parsing ipa file");
 			//Base64 encoded string
 			String plistString = readInputStreamAsString(zip.getInputStream(ze)); 
 			XMLElement elem = readPList(plistString);
 			if(elem != null)
 			{
-				System.out.println(elem.toString());
+				//System.out.println(elem.toString());
 				String xmlContent = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>";
 				xmlContent += elem.toString();
 				//Map<String, Object> data = Plist.fromXml(xmlContent);
 				Map<String, Object> data = new PlistParser().parseXML(elem);
 				for(Map.Entry<String, Object> entry :data.entrySet())
 				{
-					System.out.println(entry.getKey() + "\t"  + entry.getValue().toString());
+				//	System.out.println(entry.getKey() + "\t"  + entry.getValue().toString());
 				}
 				obj.put("AppleID", data.get("com.apple.iTunesStore.downloadInfo_accountInfo_AppleID"));
 				obj.put("itemId", data.get("itemId"));

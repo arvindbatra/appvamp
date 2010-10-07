@@ -306,7 +306,7 @@ public class BinaryPListParser {
             topLevelOffset = (int) raf.readLong();
             buf = new byte[topLevelOffset - 8];
 			
-			System.out.println(offsetCount + " "  +  refCount + " " + objectCount + " " + topLevelOffset );
+			//System.out.println(offsetCount + " "  +  refCount + " " + objectCount + " " + topLevelOffset );
 
             raf.seek(8);
             raf.readFully(buf);
@@ -377,7 +377,7 @@ public class BinaryPListParser {
             //  element # in offset table which is top level object
             topLevelOffset = (int) raf2.readLong();
             buf = new byte[topLevelOffset - 8];
-			System.out.println(offsetCount + " "  +  refCount + " " + objectCount + " " + topLevelOffset );
+			//System.out.println(offsetCount + " "  +  refCount + " " + objectCount + " " + topLevelOffset );
             //raf.seek(8);
 			raf.reset();
 			raf.skip(8L);
