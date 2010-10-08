@@ -30,7 +30,8 @@ public class AppChecker  implements Runnable
 			Thread curThread = Thread.currentThread();
 			System.out.println("Processing file " + ipaFile.getName() + " by thread id" + curThread.getName());
 			JSONObject appData = parseIPAFile(ipaFile);
-			m_outputData.add(appData);
+			if(appData != null)
+				m_outputData.add(appData);
 			
 
 
@@ -111,11 +112,15 @@ public class AppChecker  implements Runnable
 			xml = new XMLElement(new HashMap(), false, false);
 			try {
 				byte[] byteArr = Base64.decode(plistContent); 
+				StringBuffer buf = new StringBuffer();
 			  	//TODO: this data will be base 64 encoded. 
-
-				xml.parseString(plistContent);
+				for(int i=0; i<byteArr.length; i++)
+				{
+					buf.append((char)byteArr[i]);
+				}	
+				xml.parseString(buf.toString());
 			} catch (XMLParseException e) {
-				System.out.println("parsing by binary plist");
+				System.out.println("parsing by binary plist" + e.getMessage());
 				//byte[] byteArr = plistContent.getBytes();
 				byte[] byteArr = Base64.decode(plistContent); 
 				xml = new BinaryPListParser().parse(byteArr);
@@ -162,7 +167,7 @@ public class AppChecker  implements Runnable
 			
 		} catch (Exception e)
 		{
-			System.out.println("Error in parsing ipa file," + e.getMessage());
+			System.out.println("Error in parsing ipa file " + ipaFile.getName()  + " "  + ipaFile.getPath()  + e.getMessage());
 			e.printStackTrace();
 		}
 

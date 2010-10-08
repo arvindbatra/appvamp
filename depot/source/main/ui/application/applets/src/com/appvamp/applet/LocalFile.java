@@ -45,6 +45,8 @@ public class LocalFile extends Applet {
 	public void init()
 	{
 		this.win = JSObject.getWindow(this);
+		String fbuid = getParameter("fbuid");
+		System.out.println("fbuid = " + fbuid);
 
 	}
 	
