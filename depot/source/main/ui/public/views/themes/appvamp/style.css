@@ -228,6 +228,7 @@ body{color: #111; background: #708090;}
 	padding-top: 20px;
 	padding-left: 10px;
 	padding-bottom: 20px;
+	margin-bottom: 5px;
   	-moz-border-radius: 20px; 
 	-webkit-border-radius: 20px;
 	border-radius: 20px; /* future proofing */
@@ -282,7 +283,7 @@ body{color: #111; background: #708090;}
 
 /* ------Sidebar properties */
 .post-body .sidebar {float: left; width: 320px;}
-	.post-body .sidebar img{float: left; width: 250px; height: 300px; padding:10px 10px}
+	.post-body .sidebar img{float: left;  height: 200px; padding:10px 10px}
 
 .post-body .content { 
 	float: left;
