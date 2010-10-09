@@ -57,7 +57,7 @@ public class AppFetcher {
 		AppParser parser = new AppParser(outputAppDir + "/" + fileName);
     	try {
     		AppData appData = parser.parseWithDataMappings(dm);
-    		String appDataFile = appDataDir + fileName;
+    		String appDataFile = appDataDir + "/" + fileName;
     		System.out.println(appDataFile);
     		Utils.printToFile(appDataFile, appData.toJSON());
     		
