@@ -50,7 +50,6 @@ public class AppChecker  implements Runnable
 		byte[] byteArr = null;  
 		byteArr = new byte [(int)raf.length()];
 		raf.readFully(byteArr);
-				 XMLElement xml = new BinaryPListParser().parse(byteArr);
 		for(int i=0; i<byteArr.length; i++)
 		{
 			buf.write(byteArr[i]);

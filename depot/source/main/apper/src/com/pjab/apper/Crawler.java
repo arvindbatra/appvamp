@@ -4,11 +4,15 @@ import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.File;
 import java.io.IOException;
+import java.io.ByteArrayInputStream;
+import java.lang.StringBuffer;
+
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.zip.GZIPInputStream;
 
 import org.apache.http.HttpException;
 import org.apache.http.HttpRequest;
@@ -24,6 +28,7 @@ import org.apache.http.protocol.HttpContext;
 import org.apache.http.protocol.RequestUserAgent;
 
 import com.pjab.apper.ApperConstants;
+import com.pjab.apper.helpers.*;
 
 
 public class Crawler implements Runnable{
@@ -118,6 +123,21 @@ public class Crawler implements Runnable{
 		if(!response.contains("html"))
 		{
 			System.err.println("Received binary file. Skipping " + curURLInfo.m_url);
+			ByteArrayInputStream bs = new ByteArrayInputStream(response.getBytes());
+			GZIPInputStream zipin = new GZIPInputStream (bs);
+			int chunkSize = 8096;
+			byte[] buffer = new byte[chunkSize];
+			int length;
+			
+			StringBuffer sb = new StringBuffer();
+			while ((length = zipin.read(buffer, 0, chunkSize)) != -1)
+			{
+				for(int readIndex =0; readIndex < length; readIndex++)
+					sb.append((char)buffer[readIndex]);
+				
+			}
+			response = sb.toString();
+			System.out.println(response);
 			return "";
 		}
 		
@@ -208,7 +228,10 @@ public class Crawler implements Runnable{
 	
 	String getResponse(String url)
 	{
-		DefaultHttpClient httpclient = new DefaultHttpClient();
+		HttpHelper helper = new HttpHelper();
+		String response = helper.performGet(url);
+		return response;	
+		/*DefaultHttpClient httpclient = new DefaultHttpClient();
 	 	httpclient.removeRequestInterceptorByClass(RequestUserAgent.class);
 	 	((AbstractHttpClient) httpclient).addRequestInterceptor(new RequestUserAgent() {
 
@@ -244,6 +267,7 @@ public class Crawler implements Runnable{
 		}
 		httpclient.getConnectionManager().shutdown();
 		return "";
+		*/
 	}
 
 

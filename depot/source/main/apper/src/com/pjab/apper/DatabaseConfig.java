@@ -2,6 +2,7 @@ package com.pjab.apper;
 
 import java.io.PrintWriter;
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.sql.DriverManager;
 
 public class DatabaseConfig 
@@ -15,6 +16,11 @@ public class DatabaseConfig
 	
 	protected DatabaseConfig() 
 	{
+		initConnection();
+	}
+	
+	private void initConnection()
+	{
 		try {
 			String url = "jdbc:mysql://" + SERVER_HOST + "/" + DATABASE_NAME + "?useUnicode=yes&characterEncoding=UTF-8";
 		    Class.forName ("com.mysql.jdbc.Driver");
@@ -27,18 +33,27 @@ public class DatabaseConfig
 		System.err.println("Cannot connect to database " + e.getMessage());
 		e.printStackTrace();
 	  }
+
 	}
-	
+
 	public static DatabaseConfig getInstance() 
 	{
 		if(instance == null) {
 			instance = new DatabaseConfig();
 		}
+		
 		return instance;
 	}
 	
 	public Connection getConnection()
 	{
+		try {
+			if(!conn.isValid(0))
+			initConnection();
+		}catch(SQLException sqe)
+		{
+			System.out.println(sqe.getMessage());
+		}
 		return conn;
 	}
 	

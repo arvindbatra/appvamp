@@ -6,11 +6,15 @@ import java.io.FileReader;
 import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.ByteArrayInputStream;
+import java.lang.StringBuffer;
+import java.util.zip.GZIPInputStream;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.Properties;
 
-
+import com.pjab.apper.helpers.*;
 
 public class Utils {
 
@@ -26,6 +30,34 @@ public class Utils {
 		 return defaultProps;
 //
 	}
+
+	public static String parseGzipFile(String file)
+	{
+		try {
+			FileInputStream fin = new FileInputStream(file);
+			GZIPInputStream zipin = new GZIPInputStream (fin);
+			int chunkSize = 8096;
+			byte[] buffer = new byte[chunkSize];
+			int length;
+			
+			StringBuffer sb = new StringBuffer();
+			while ((length = zipin.read(buffer, 0, chunkSize)) != -1)
+			{
+				for(int readIndex =0; readIndex < length; readIndex++)
+					sb.append((char)buffer[readIndex]);
+				
+			}
+			String response = sb.toString();
+			System.out.println(response);
+			return response;
+		}catch (Exception e)
+		{
+			System.out.println(e.getMessage());
+
+		}
+		return "";
+	}
+	
 
 
 	public static String readFile( String file ) throws IOException {
