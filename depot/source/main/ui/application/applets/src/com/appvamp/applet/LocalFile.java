@@ -19,10 +19,15 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import org.json.simple.*;
 import netscape.javascript.JSObject;
 import netscape.javascript.JSObject;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+
 
 
 public class LocalFile extends Applet {
 	public JSObject win;
+	public String fbuid;
 
 	public LocalFile() {
 		Panel p = new Panel();
@@ -45,8 +50,11 @@ public class LocalFile extends Applet {
 	public void init()
 	{
 		this.win = JSObject.getWindow(this);
-		String fbuid = getParameter("fbuid");
+		this.fbuid = getParameter("fbuid");
 		System.out.println("fbuid = " + fbuid);
+
+
+
 
 	}
 	
@@ -55,6 +63,13 @@ public class LocalFile extends Applet {
 
 	public boolean action(Event evt, Object arg) {
 		if (arg.equals("Read Apps")) {
+			if(fbuid.isEmpty() )
+			{
+				String message = "Please login with facebook before pressing the sync button";
+				System.out.println(message);
+				notifyUser(message);
+				return false;
+			}
 			System.out.println("OPEN CLICKED");
 			String homedir = System.getProperty("user.home");
 			String ostype = System.getProperty("os.name");
@@ -83,7 +98,7 @@ public class LocalFile extends Applet {
 			else
 			{
 				System.out.println("Can not find installed apps. Sorry!");
-				//TODO: notify to user.
+				notifyUser("We are extremely sorry, we do not recognize your operating system at the moment. Please contact us at contact@appvamp.com to resolve this issue. Thanks!");
 				return false;
 			}
 		
@@ -102,21 +117,25 @@ public class LocalFile extends Applet {
 			if(appDirs.size() == 0)
 			{
 				System.out.println("Can not find installed apps. Sorry!");
-				//TODO: notify to user.
+				notifyUser("We are extremely sorry, we could not find any installed apps at the moment. Please contact us at contact@appvamp.com to resolve this issue. Thanks!");
 				return false;
 
 			}
-
-			checkAndReadApps(appDirs);
-
+			boolean success = checkAndReadApps(appDirs);
+			if(!success)
+			{
+				notifyUser("We are extremely sorry, we could not read your installed apps at the moment. Please contact us at contact@appvamp.com to resolve this issue. We appeciate your patience!");
+				return false;
+			}
 
 		} else return false;
 		return true;
 	}
 
 
-	public void checkAndReadApps(List<File> appDirs)
+	public boolean checkAndReadApps(List<File> appDirs)
 	{
+		boolean success = false;
 		for(int fi = 0; fi<appDirs.size(); fi++) 
 		{
 			File appDir = appDirs.get(fi);
@@ -154,12 +173,17 @@ public class LocalFile extends Applet {
 
 				}
 
-				System.out.println(arr.toJSONString());
+				JSONObject postJson = new JSONObject();
+				postJson.put("fbuid", fbuid);
+				postJson.put("installedApps", arr);
+
+				System.out.println(postJson.toJSONString());
 				JSObject doc = (JSObject) this.win.getMember("document");
 				Object[] objects = new Object[1];
-				objects[0] = arr.toJSONString();
+				objects[0] = postJson.toJSONString();
 				this.win.call("showApps", objects); 
-				
+				postData(postJson.toJSONString());
+				success =  true;
 
 			}catch(java.lang.InterruptedException ie)
 			{
@@ -168,8 +192,8 @@ public class LocalFile extends Applet {
 			{
 				System.err.println("Error in parsing dir " + appDir.getName() + " " + e.getMessage());
 			}
-			
 		}
+		return success;
 	}
 	private static String joinPath(String[] components, String sep)
 	{
@@ -179,6 +203,56 @@ public class LocalFile extends Applet {
 		}
 		return ret + components[(components.length - 1)];
 	}
+
+	
+	private void notifyUser(String message)
+	{
+		Object[] objects = new Object[1];
+		objects[0] = message;
+		this.win.call("showMessage", objects); 
+
+	}
+
+
+
+	private void postData(String jsonData)
+	{
+		HttpURLConnection connection = null;
+		try
+		{
+			URL base = getDocumentBase();
+			URL postback = new URL(base.getProtocol(), base.getHost(), getDocumentBase().getPort(), "/app/register_apps");
+
+			connection = (HttpURLConnection)postback.openConnection();
+			connection.setDoOutput(true);
+
+			connection.setRequestMethod("PUT");
+			connection.setRequestProperty("Content-Type", "application/json");
+			connection.setRequestProperty("Content-Length", Integer.toString(jsonData.length()));
+
+			OutputStreamWriter out = new OutputStreamWriter(connection.getOutputStream());
+
+			out.write(jsonData);
+			out.close();
+
+			if (connection.getResponseCode() > 399) {
+				System.err.println("Got error from server " + connection.getResponseMessage());
+				out.close();
+				connection.disconnect();
+				return;
+			}
+		}
+		catch (IOException ie) {
+			if (connection != null) {
+				System.err.println("Closing connection " + connection);
+				connection.disconnect();
+				System.err.println("Network connection failed");
+				ie.printStackTrace();
+			}
+		}
+
+	}
+
 
 }
 
