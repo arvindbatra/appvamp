@@ -38,8 +38,8 @@ closedir(DIR);
  @files = sort(@files);
 foreach my $file (@files)
 {
-	print "file: $file\n";
 	if($file =~ m/.sql$/) {
+		print "file: $file\n";
 		my$output = '';
 
 		$checkCmd = "\'select * from  DBStatus where script_name = \"$file\"\'";
