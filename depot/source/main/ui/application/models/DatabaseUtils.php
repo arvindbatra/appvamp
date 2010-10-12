@@ -305,6 +305,99 @@ class DatabaseUtils
 
 	}
 
+	////////////////////User Info ///////////////////////////////
 
 
+
+	////////////////////////////////UserAppInfo ////////////////////////
+	
+	public static function updateUserAppInfo($dbHandle, $jsonObj)
+	{
+		$logger = AppLogger::getInstance()->getLogger();
+		$fbuid = $jsonObj->{'fbuid'};
+		$fbname = $jsonObj->{'fbname'};
+
+		$logger->debug("updating apps for user ". $fbuid . " " . $fbname );
+		$installedApps = $jsonObj->{'installedApps'};
+		$installedAppMap = array();
+		foreach ($installedApps as $k => $v)
+		{
+			$installedAppMap[$v->{'itemId'} ] = $v;
+		}
+		$appsInDB = self::getUserAppInfo($dbHandle, $fbuid);
+		$logger->debug("User" . $fbuid .'('.$fbname.')'.'has ' .count($appsInDB) . ' apps installed');
+		foreach ($appsInDB as &$dbapp) {
+			$appid = $dbapp['app_external_id'];
+			if(array_key_exists($appid, $installedAppMap)) {
+				$logger->debug("App found installed" . $dbapp['app_name']);
+				$installedAppMap[$appid]->already_in_db = 1;
+				//TODO: check apple id compatibility
+			}
+			else
+			{
+				$dbapp['present_now'] = 0;
+				//TODO: update present_not back in the database
+			}
+		}
+		
+		$fbuid = mysql_real_escape_string($fbuid);
+		foreach ($installedAppMap as $k => $v)
+		{
+			if($v->already_in_db != 1)
+			{
+				$v->AppleID = mysql_real_escape_string($v->AppleID);
+				$v->itemId = mysql_real_escape_string ($v->itemId);
+				$v->itemName = mysql_real_escape_string ($v->itemName);
+				$v->purchaseDate = mysql_real_escape_string ($v->purchaseDate);
+
+
+				$query = "insert into UserAppInfo (fbuid, apple_id, app_external_id, app_name, purchased_date, present_now, updated_at, created_at)  values ('$fbuid', '$v->AppleID', '$v->itemId', '$v->itemName', '$v->purchaseDate', 1, NOW(), NOW())
+				";
+				$logger->debug("executing query ". $query);
+				$result = mysql_query($query, $dbHandle);
+				if (!$result) {
+					$logger->error('Invalid query: ' . mysql_error());
+				}
+			} else {
+				$logger->debug("Skipping app as it was already found in db for this user" . $v->itemName);
+			}
+
+		}
+		
+		
+
+
+
+	}
+
+	public static function getUserAppInfo($dbHandle, $fbuid)
+	{
+		$fbuid = mysql_real_escape_string($fbuid);
+		$query = "select * from UserAppInfo where fbuid = '$fbuid'";
+		return self::queryUserAppInfo($dbHandle, $query);
+	}
+
+	public static function queryUserAppInfo($dbHandle, $query)
+	{
+		$logger = AppLogger::getInstance()->getLogger();
+		$logger->debug('Calling query ' . $query);
+		$result = mysql_query($query, $dbHandle);
+		if (!$result) {
+			$logger->error('Invalid query: ' . mysql_error());
+			return null;
+		}
+		$table = array();
+		if(!isset($result)) {
+			$logger->debug("Returned zero results for query: $query");
+			return $table;
+		}
+		
+		while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) 
+		{
+			$table[$i] = $row;
+			$i++;
+		}
+		mysql_free_result($result);
+		return $table;
+	}
 }

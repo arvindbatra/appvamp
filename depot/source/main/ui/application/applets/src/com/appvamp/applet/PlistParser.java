@@ -15,7 +15,7 @@ public class PlistParser
 		}catch (Exception e)
 		{
 
-			System.err.println("Failed to parse " + elem.toString() + " " + e.getMessage());
+			System.out.println("Failed to parse " + elem.toString() + " " + e.getMessage());
 
 		}
 

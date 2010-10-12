@@ -60,7 +60,9 @@ function route()
 
 	$logger = AppLogger::getInstance()->getLogger();
 	$qpacket = array();
-	
+
+
+
 	/**read params and then unregisterGlobals()*/
 	$url = '';
 	if(isset($_GET['url']))
@@ -74,6 +76,12 @@ function route()
 	foreach ($_POST as $key => $value) {
 	  	$logger->debug('Post param: ' . $key.'='.$value);
 		$qpacket[$key] = $value;
+	}
+	
+	$body = @file_get_contents('php://input');
+	if(isset($body)) {
+		$logger->debug("body="  . $body);
+		$qpacket['postBody'] = $body;
 	}
 	$qpacket["url"] = $url;
 	$action = 'view';
@@ -91,7 +99,7 @@ function route()
 	removeMagicQuotes();
 	unregisterGlobals();
 
-	$allControllers = array("app", "admin","about", "reco");
+	$allControllers = array("app", "admin","about", "reco", "register");
 	//$allControllers = array( "reco");
 
 	$controllerName = getController($qpacket);

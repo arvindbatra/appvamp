@@ -141,25 +141,58 @@ public class AppChecker  implements Runnable
 
 			ZipFile zip = new ZipFile(ipaFile);
 			ZipEntry ze = zip.getEntry("iTunesMetadata.plist");
-			//System.out.println("parsing ipa file");
+			if(ze == null)
+			{
+				System.out.println("no zip entry found for file " + ipaFile.getName());
+				return null;
+			}
+			
 			//Base64 encoded string
-			String plistString = readInputStreamAsString(zip.getInputStream(ze)); 
+			String plistString = readInputStreamAsString(zip.getInputStream(ze));
 			XMLElement elem = readPList(plistString);
 			if(elem != null)
 			{
-				//System.out.println(elem.toString());
+				System.out.println("Recevied elem for  " + ipaFile.getName());
+
 				String xmlContent = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>";
 				xmlContent += elem.toString();
+				xmlContent = RemoveTroublesomeCharacters (xmlContent);
 				//Map<String, Object> data = Plist.fromXml(xmlContent);
-				Map<String, Object> data = new PlistParser().parseXML(elem);
+				PlistParser parser = new PlistParser ();
+				Map<String, Object> data = parser.parseXML(elem);
+				if(data == null)
+				{
+					return null;
+				}
 				for(Map.Entry<String, Object> entry :data.entrySet())
 				{
 				//	System.out.println(entry.getKey() + "\t"  + entry.getValue().toString());
 				}
-				obj.put("AppleID", data.get("com.apple.iTunesStore.downloadInfo_accountInfo_AppleID"));
-				obj.put("itemId", data.get("itemId"));
-				obj.put("itemName", data.get("itemName"));
-				obj.put("purchaseDate", data.get("com.apple.iTunesStore.downloadInfo_purchaseDate"));
+				String appleId = "";
+				if(data.containsKey("com.apple.iTunesStore.downloadInfo_accountInfo_AppleID"))
+					appleId = (String)data.get("com.apple.iTunesStore.downloadInfo_accountInfo_AppleID");
+				else if(data.containsKey("appleId"))
+					appleId = (String)data.get("appleId");
+
+				String itemId = "";
+				if(data.containsKey("itemId"))
+					itemId = (String)data.get("itemId");
+				String itemName= "", purchaseDate = "";
+				if(data.containsKey("itemName"))
+					itemName = (String)data.get("itemName");
+				if(data.containsKey("com.apple.iTunesStore.downloadInfo_purchaseDate"))
+				{
+					purchaseDate = (String) data.get("com.apple.iTunesStore.downloadInfo_purchaseDate");
+					purchaseDate = purchaseDate.replace('T', ' ');
+					purchaseDate = purchaseDate.replace('Z', ' ');
+					purchaseDate = purchaseDate.trim();
+				}
+				
+				
+				obj.put("AppleID", appleId);
+				obj.put("itemId", itemId);
+				obj.put("itemName", itemName);
+				obj.put("purchaseDate", purchaseDate);
 				
 			}
 			return obj;
@@ -225,6 +258,30 @@ public class AppChecker  implements Runnable
 
 
 
+	public static String RemoveTroublesomeCharacters(String inString)
+	{
+	    if (inString == null) return null;
+
+	    StringBuilder newString = new StringBuilder();
+	    char ch;
+	    boolean prevWhitespace = false;
+	    for (int i = 0; i < inString.length(); i++)
+	    {
+
+	        ch = inString.charAt(i);
+	        // remove any characters outside the valid UTF-8 range as well as all control characters
+	        // except tabs and new lines
+	        if(Character.isISOControl(ch))
+	        	continue;
+	        if ((ch < 0x00FD && ch > 0x001F) || ch == '\t' || ch == '\n' || ch == '\r')
+	        {
+	            newString.append(ch);
+	        }
+	        
+	    }
+	    return newString.toString();
+
+	}
 
 
 

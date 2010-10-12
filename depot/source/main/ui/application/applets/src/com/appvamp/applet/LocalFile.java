@@ -22,12 +22,14 @@ import netscape.javascript.JSObject;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLEncoder;
 
 
 
 public class LocalFile extends Applet {
 	public JSObject win;
 	public String fbuid;
+	public String fbName;
 
 	public LocalFile() {
 		Panel p = new Panel();
@@ -51,6 +53,7 @@ public class LocalFile extends Applet {
 	{
 		this.win = JSObject.getWindow(this);
 		this.fbuid = getParameter("fbuid");
+		this.fbName = getParameter("fbname");
 		System.out.println("fbuid = " + fbuid);
 
 
@@ -175,14 +178,17 @@ public class LocalFile extends Applet {
 
 				JSONObject postJson = new JSONObject();
 				postJson.put("fbuid", fbuid);
+				postJson.put("fbname", fbName);
 				postJson.put("installedApps", arr);
-
+				
+				
 				System.out.println(postJson.toJSONString());
+				postData(postJson.toJSONString());
+
 				JSObject doc = (JSObject) this.win.getMember("document");
 				Object[] objects = new Object[1];
 				objects[0] = postJson.toJSONString();
 				this.win.call("showApps", objects); 
-				postData(postJson.toJSONString());
 				success =  true;
 
 			}catch(java.lang.InterruptedException ie)
@@ -220,20 +226,23 @@ public class LocalFile extends Applet {
 		HttpURLConnection connection = null;
 		try
 		{
+			System.out.println("Posting data to server");
 			URL base = getDocumentBase();
-			URL postback = new URL(base.getProtocol(), base.getHost(), getDocumentBase().getPort(), "/app/register_apps");
+			URL postback = new URL(base.getProtocol(), base.getHost(), getDocumentBase().getPort(), "/register/register_apps");
+			jsonData = URLEncoder.encode(jsonData,"UTF-8");
 
 			connection = (HttpURLConnection)postback.openConnection();
 			connection.setDoOutput(true);
 
-			connection.setRequestMethod("PUT");
+			connection.setRequestMethod("POST");
 			connection.setRequestProperty("Content-Type", "application/json");
 			connection.setRequestProperty("Content-Length", Integer.toString(jsonData.length()));
 
 			OutputStreamWriter out = new OutputStreamWriter(connection.getOutputStream());
-
 			out.write(jsonData);
 			out.close();
+		
+			System.out.println("Response code = " + connection.getResponseCode());
 
 			if (connection.getResponseCode() > 399) {
 				System.err.println("Got error from server " + connection.getResponseMessage());
@@ -242,13 +251,16 @@ public class LocalFile extends Applet {
 				return;
 			}
 		}
-		catch (IOException ie) {
+		catch (Exception ie) {
 			if (connection != null) {
 				System.err.println("Closing connection " + connection);
 				connection.disconnect();
 				System.err.println("Network connection failed");
 				ie.printStackTrace();
 			}
+		}
+		if (connection != null) {
+			connection.disconnect();
 		}
 
 	}
