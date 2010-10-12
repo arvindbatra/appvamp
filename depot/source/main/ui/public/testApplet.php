@@ -2,14 +2,8 @@
 
 define('DS', DIRECTORY_SEPARATOR);
 define('ROOT', dirname(dirname(__FILE__)));
-
-
-define('FACEBOOK_APP_ID', '156605134369786');
-define('FACEBOOK_SECRET', '85d89a470b8f98bbfc1b7d0255915813');
-
-$me = null;
-
 require_once (ROOT . DS . 'lib' . DS . 'bootstrap.php');
+$me = null;
 $facebook = new Facebook(array(
   'appId'  => FACEBOOK_APP_ID,
   'secret' => FACEBOOK_SECRET,
@@ -36,9 +30,8 @@ if ($me) {
 	  $loginUrl = $facebook->getLoginUrl();
 }
 
+
 ?>
-
-
 <html>
 <head>
 

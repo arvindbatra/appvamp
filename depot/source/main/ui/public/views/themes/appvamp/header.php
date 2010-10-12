@@ -20,20 +20,73 @@
   })();
 </script>
 
+<?php $me = null;
+$facebook = new Facebook(array(
+  'appId'  => FACEBOOK_APP_ID,
+  'secret' => FACEBOOK_SECRET,
+  'cookie' => true, // enable optional cookie support
+));
+
+$session = $facebook->getSession();
+
+// Session based API call.
+if ($session) {
+  try {
+    $uid = $facebook->getUser();
+    $me = $facebook->api('/me');
+  } catch (FacebookApiException $e) {
+    error_log($e);
+  }
+}
+
+
+// login or logout url will be needed depending on current user state.
+if ($me) {
+	  $logoutUrl = $facebook->getLogoutUrl();
+} else {
+	  $loginUrl = $facebook->getLoginUrl();
+}
+
+?>
 </head>
 <body>
+<div id="fb-root"></div>
+<script>
+  window.fbAsyncInit = function() {
+	FB.init({appId: '156605134369786', 
+			status: true, cookie: true,
+			 xfbml: true});
+	FB.Event.subscribe('auth.login', function() {
+		window.location.reload();
+	});
+  };
+	(function() {
+		var e = document.createElement('script');
+		e.type = 'text/javascript';
+		e.src = document.location.protocol +
+		'//connect.facebook.net/en_US/all.js';
+		e.async = true;
+		document.getElementById('fb-root').appendChild(e);
+	}());
+</script>
+
 <div id="container">
 <div class="light-grey">
 	<div id="header-container">
 	<div class="container-header-dark-normal"><span></span></div>
 	<div class="header" >
-		<h1> <a href="/"> The <b>AppVamp</b></a></h1>
+		<h1> <a href="/"> The <b>AppVamp</b></a>
+		<fb:like>	</fb:like>
+		</h1>	
 		<div class="generic-info">
 			<i>I am the App Vamp!</i> <br/> <br/>
-			<p align="center">
-				<a href="http://www.twitter.com/appvamp"><img src="http://twitter-badges.s3.amazonaws.com/t_logo-a.png" alt="Follow appvamp on Twitter" height="35px"/></a> &nbsp;
-				<a name="fb_share" type="name_button" href="http://www.facebook.com/sharer.php"><img  height="35px" src="http://profile.ak.fbcdn.net/hprofile-ak-snc4/hs624.snc3/27535_20531316728_5553_q.jpg" alt="Share Appvamp on facebook"/></a><!--script src="http://static.ak.fbcdn.net/connect.php/js/FB.Share" type="text/javascript"></script-->
-			</p>
+			<div align="center">
+	    		
+				<a  href="http://www.twitter.com/appvamp"><img src="http://twitter-badges.s3.amazonaws.com/t_logo-a.png" alt="Follow appvamp on Twitter" height="25px"/></a> 
+				<a name="fb_share" type="name_button" href="http://www.facebook.com/sharer.php">
+				<img  height="25px" src="http://profile.ak.fbcdn.net/hprofile-ak-snc4/hs624.snc3/27535_20531316728_5553_q.jpg" alt="Share Appvamp on facebook" height="25px"/>
+				</a><!--script src="http://static.ak.fbcdn.net/connect.php/js/FB.Share" type="text/javascript"></script-->
+			</div>	
 		</div>
 	</div>
 	<div class="header-box" >

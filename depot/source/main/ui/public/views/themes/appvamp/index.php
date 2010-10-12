@@ -18,11 +18,14 @@
 					<h4> <?php echo $featuredPost->appInfo->appSeller ?></h4>
 					<h4> Price: <?php echo $featuredPost->appInfo->price ?></h4>
 					<h4> Genre: <?php echo $featuredPost->appInfo->genre ?></h4>
-					<div class="curved-box download-app">
+					<div style="width:200px" class="curved-box download-app">
 						<a href="<?php echo $featuredPost->appInfo->originalLink ?>" >View in iTunes </a>
 					</div>
 				</div>
-	
+				<div class="fb-login">
+    				<fb:login-button autologoutlink="true"></fb:login-button>
+				</div>
+
 			</div> <!-- end featured  -->
 			<div class="post-body ">
 				<div class="sidebar">
