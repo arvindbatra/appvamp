@@ -75,9 +75,11 @@ if ($me) {
 	<div id="header-container">
 	<div class="container-header-dark-normal"><span></span></div>
 	<div class="header" >
-		<h1> <a href="/"> The <b>AppVamp</b></a>
-		<fb:like>	</fb:like>
-		</h1>	
+		<div class="floater">
+			<h1> <a href="/"> The <b>AppVamp &nbsp;&nbsp; </b></a><h1>
+		</div>
+		<div class="like" ><iframe src="http://www.facebook.com/plugins/like.php?href=www.appvamp.com&amp;layout=standard&amp;show_faces=false&amp;width=200&amp;action=like&amp;colorscheme=light&amp;height=80" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:200px; height:80px;" allowTransparency="true"></iframe> 
+		</div>
 		<div class="generic-info">
 			<i>I am the App Vamp!</i> <br/> <br/>
 			<div align="center">

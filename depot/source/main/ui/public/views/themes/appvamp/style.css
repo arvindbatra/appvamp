@@ -143,24 +143,28 @@ body{color: #111; background: #708090;}
 .header {
  	padding: 0px; margin: 0px;
 	padding-left: 40px;
+	height: 40px;
+	margin: 30px 0 0;
+	padding-top: 20px;
+	line-height: 24px;
 }
 
 .header h1 {
-	position: relative;
+	/**position: relative;**/
 	/*width= 100px;*/
-	height: 40px;
-	margin: 30px 0 0;
 	font-size: 36px;
-	line-height: 24px;
 	/**padding-left: 40px;**/
-	padding-top: 20px;
 }
-.header p {
-	position: relative;
+.header .like {
 
 
 }
 
+
+.floater
+{
+	float:left;
+}
 
 .header .generic-info {
 	position: absolute;
