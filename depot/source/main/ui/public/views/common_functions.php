@@ -50,7 +50,9 @@ function print_review_info($rev)
 function get_seo_string($string)
 {
   	$string = trim($string);
-	$newS = str_replace(" ", "-", $string);
+	$newS = str_replace("-", "hyphen", $string);
+	$newS = str_replace("+", "plus", $newS);
+	$newS = str_replace(" ", "-", $newS);
 	return $newS;
 
 }
@@ -58,6 +60,8 @@ function get_seo_string($string)
 function parse_seo_string($string)
 {
 	$newS = str_replace("-", " ", $string);
+	$newS = str_replace("hyphen", "-", $newS);
+	$newS = str_replace("plus", "+", $newS);
 	return $newS;
 
 }
