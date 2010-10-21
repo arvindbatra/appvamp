@@ -85,7 +85,8 @@ if ($me) {
 			<div align="center">
 	    		
 				<a  href="http://www.twitter.com/appvamp"><img src="http://twitter-badges.s3.amazonaws.com/t_logo-a.png" alt="Follow appvamp on Twitter" height="25px"/></a> 
-				<a name="fb_share" type="name_button" href="http://www.facebook.com/sharer.php">
+				<!--a name="fb_share" type="name_button" href="http://www.facebook.com/sharer.php" share_url="http://www.facebook.com/pages/AppVamp/160659277290847"-->
+				<a name="fb_share" type="icon" href="http://www.facebook.com/sharer.php?u=http%3A%2F%2Fwww.facebook.com%2Fpages%2FAppVamp%2F160659277290847" >
 				<img  height="25px" src="http://profile.ak.fbcdn.net/hprofile-ak-snc4/hs624.snc3/27535_20531316728_5553_q.jpg" alt="Share Appvamp on facebook" height="25px"/>
 				</a><!--script src="http://static.ak.fbcdn.net/connect.php/js/FB.Share" type="text/javascript"></script-->
 			</div>	
