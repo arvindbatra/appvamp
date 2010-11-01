@@ -10,6 +10,7 @@ class AboutController extends Controller
 		{
 			$type = $qpacket['attribute_1'];
 			$this->set('showAboutType', $type);
+			$this->set('viewMode',get_seo_string($type));
 		}
 	}
 

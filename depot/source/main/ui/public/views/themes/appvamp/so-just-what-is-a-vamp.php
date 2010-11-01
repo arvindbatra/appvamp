@@ -1,4 +1,5 @@
 
+<div class="body-box clearfix">
 
 <div id="about-container">
 
@@ -114,4 +115,5 @@ I think the poem is simply delicious. Here it is, for your pleasure:
 	<br	/>
 	<br	/>
 </p>
+</div>
 </div>

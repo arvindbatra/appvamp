@@ -183,6 +183,10 @@ public class AppChecker  implements Runnable
 				if(data.containsKey("com.apple.iTunesStore.downloadInfo_purchaseDate"))
 				{
 					purchaseDate = (String) data.get("com.apple.iTunesStore.downloadInfo_purchaseDate");
+				}else if(data.containsKey("purchaseDate"))
+					purchaseDate = (String) data.get("purchaseDate");
+
+				if(!purchaseDate.isEmpty()) {
 					purchaseDate = purchaseDate.replace('T', ' ');
 					purchaseDate = purchaseDate.replace('Z', ' ');
 					purchaseDate = purchaseDate.trim();

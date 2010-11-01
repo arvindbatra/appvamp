@@ -30,6 +30,8 @@ public class LocalFile extends Applet {
 	public JSObject win;
 	public String fbuid;
 	public String fbName;
+	public String userid;
+	public boolean showApps;
 
 	public LocalFile() {
 		Panel p = new Panel();
@@ -54,7 +56,13 @@ public class LocalFile extends Applet {
 		this.win = JSObject.getWindow(this);
 		this.fbuid = getParameter("fbuid");
 		this.fbName = getParameter("fbname");
-		System.out.println("fbuid = " + fbuid);
+		this.userid = getParameter("userid");
+		String showAppsStr= getParameter("showApps");
+		if(showAppsStr == null)
+			this.showApps = false;
+		else if(showAppsStr.equalsIgnoreCase("true")) 
+			this.showApps = true;
+		System.out.println("fbuid = " + fbuid + " userid=" + userid);
 
 
 
@@ -175,20 +183,39 @@ public class LocalFile extends Applet {
 					arr.add(appDataList.poll());
 
 				}
+				System.out.println("sz" + arr.size());
+				int offset = 40;	//40 apps at a time. 
+				for(int chunker = 0; chunker < arr.size(); chunker += offset)
+				{
+					int start = chunker;
+					int end = Math.min(chunker+offset, arr.size());
+					JSONObject postJson = new JSONObject();
+					JSONArray chunkArr = new JSONArray();
+					for(int cindex = start; cindex < end; cindex++)
+						chunkArr.add(arr.get(cindex));
+					postJson.put("fbuid", fbuid);
+					postJson.put("userid", userid);
+					postJson.put("fbname", fbName);
+					postJson.put("installedApps", chunkArr);
+					System.out.println(postJson.toJSONString());
+					postData(postJson.toJSONString());
+					
+				}
 
-				JSONObject postJson = new JSONObject();
-				postJson.put("fbuid", fbuid);
-				postJson.put("fbname", fbName);
-				postJson.put("installedApps", arr);
 				
 				
-				System.out.println(postJson.toJSONString());
-				postData(postJson.toJSONString());
 
-				JSObject doc = (JSObject) this.win.getMember("document");
-				Object[] objects = new Object[1];
-				objects[0] = postJson.toJSONString();
-				this.win.call("showApps", objects); 
+				if(this.showApps) {	
+					JSObject doc = (JSObject) this.win.getMember("document");
+					JSONObject postJson = new JSONObject();
+					postJson.put("fbuid", fbuid);
+					postJson.put("fbname", fbName);
+					postJson.put("installedApps", arr);
+					Object[] objects = new Object[1];
+					objects[0] = postJson.toJSONString();
+					this.win.call("showApps", objects); 
+				}
+				
 				success =  true;
 
 			}catch(java.lang.InterruptedException ie)

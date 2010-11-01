@@ -1,3 +1,15 @@
+<?php
+
+if(isset($viewMode))
+{
+	require_once($themeDir . DS. $viewMode .'.php');
+}
+else
+{
+	require_once($themeDir . DS . 'app-data.php');
+}
+
+/*
 <div class="dark-grey">
 	<div id="body-container" >
 		<?php if(isset($featuredPost)) { ?>
@@ -24,8 +36,16 @@
 					</div>
 					<br>
 				</div>
-				<div class="fb-login">
-    				<fb:login-button autologoutlink="true"></fb:login-button>
+				<div class="featured-verify">
+					<!--div class="fb-login"-->
+					<br/>	
+					<div class="curved-box download-app">
+						<div id="verify-app" loggedin="<?php echo $loggedin?>"><input type="submit" value="Verify App Download" /></div>
+						<form action="<?php echo $pageHost?>/account" id="submit-verify-app" method="post" >
+							<input type="hidden" name="user_info" value="<?php echo urlencode(json_encode($me))?>">
+							<input type="hidden" name="auth_type" value="facebook">
+						</form>
+					</div>
 				</div>
 
 			</div> <!-- end featured  -->
@@ -87,3 +107,5 @@
 		<?php } ?>
 	</div>	<!-- end body-container -->
 </div>		<!-- end dark-grey-->
+
+*/

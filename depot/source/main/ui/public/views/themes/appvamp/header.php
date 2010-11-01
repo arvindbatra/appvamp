@@ -2,6 +2,8 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<script src="http://jqueryjs.googlecode.com/files/jquery-1.2.6.min.js" type="text/javascript"></script>
+<script src="/<?php echo $themeDir?>/scripts/popup.js" type="text/javascript"></script>
 
 
 <title><?php echo $title; ?></title>
@@ -41,15 +43,19 @@ if ($session) {
 
 
 // login or logout url will be needed depending on current user state.
+$loggedin = false;
 if ($me) {
-	  $logoutUrl = $facebook->getLogoutUrl();
+	$loggedin = true;
+	$logoutUrl = $facebook->getLogoutUrl();
 } else {
-	  $loginUrl = $facebook->getLoginUrl();
+	
+	$loginUrl = $facebook->getLoginUrl();
 }
 
 ?>
 </head>
 <body>
+<?php require_once ("$themeDir/login-popup.php"); ?>
 <div id="fb-root"></div>
 <script>
   window.fbAsyncInit = function() {
@@ -78,24 +84,35 @@ if ($me) {
 		<div class="floater">
 			<h1> <a href="/"> The <b>AppVamp &nbsp;&nbsp; </b></a><h1>
 		</div>
-		<div class="like" ><iframe src="http://www.facebook.com/plugins/like.php?href=www.appvamp.com&amp;layout=standard&amp;show_faces=false&amp;width=200&amp;action=like&amp;colorscheme=light&amp;height=80" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:200px; height:80px;" allowTransparency="true"></iframe> 
+		<div class="floater" style="padding-right:10px;"> 
+			<a  href="http://www.twitter.com/appvamp"><img src="http://twitter-badges.s3.amazonaws.com/t_logo-a.png" alt="Follow appvamp on Twitter" height="25px"/></a> 
+		</div>
+		<div class="like" >
+		<iframe src="http://www.facebook.com/plugins/like.php?href=www.appvamp.com&amp;layout=standard&amp;show_faces=false&amp;width=200&amp;action=like&amp;colorscheme=light&amp;height=80" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:200px; height:80px;" allowTransparency="true"></iframe> 
 		</div>
 		<div class="generic-info">
-			<i>I am the App Vamp!</i> <br/> <br/>
+			<div>
+				<i>I am the App Vamp!</i> 
+			</div>
+    			<fb:login-button autologoutlink="true"></fb:login-button>
 			<div align="center">
 	    		
-				<a  href="http://www.twitter.com/appvamp"><img src="http://twitter-badges.s3.amazonaws.com/t_logo-a.png" alt="Follow appvamp on Twitter" height="25px"/></a> 
-				<!--a name="fb_share" type="name_button" href="http://www.facebook.com/sharer.php" share_url="http://www.facebook.com/pages/AppVamp/160659277290847"-->
-				<a name="fb_share" type="icon" href="http://www.facebook.com/sharer.php?u=http%3A%2F%2Fwww.facebook.com%2Fpages%2FAppVamp%2F160659277290847" >
+				<!--a name="fb_share" type="icon" href="http://www.facebook.com/sharer.php?u=http%3A%2F%2Fwww.facebook.com%2Fpages%2FAppVamp%2F160659277290847" >
 				<img  height="25px" src="http://profile.ak.fbcdn.net/hprofile-ak-snc4/hs624.snc3/27535_20531316728_5553_q.jpg" alt="Share Appvamp on facebook" height="25px"/>
-				</a><!--script src="http://static.ak.fbcdn.net/connect.php/js/FB.Share" type="text/javascript"></script-->
+				</a-->
 			</div>	
 		</div>
 	</div>
-	<div class="header-box" >
+	<div class="header-box clearfix" >
 		<ul class="nav">
 			<li><a href="/">App of the day</a></li>
-			<li><a href="/about/so-just-what-is-a-vamp">So just what is a Vamp ?</a></li>
+			<?php /*if ($loggedin == true){ ?>
+				<li><a href="/account" >Manage apps</a> </li>
+			<?php } else {?>
+				<li><a href="/about/so-just-what-is-a-vamp">So just what is a Vamp ?</a></li>
+			<?php } */?>
+				<li><a href="/about/so-just-what-is-a-vamp">So just what is a Vamp ?</a></li>
+
 			<li><a href="/about/the-team">The Team</a></li>
 			<li><a href="/about/reach-out-and-touch-me">Reach out and Touch Me</a></li>
 		</ul>
@@ -110,3 +127,6 @@ if ($me) {
 
 	</div>
 </div>
+
+<div class="dark-grey">
+	<div id="body-container" >

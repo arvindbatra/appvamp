@@ -30,12 +30,11 @@ class Controller {
 
 		foreach($qpacket as $key => &$val) {
 			$this->set($key,$val);
-			$this->logger->debug('arv_setting '.$key.'='.$val);
 		}
-		$themeName = 'selecta';
 		$themeName = 'appvamp';
 		$this->set('themes', $themeName);
 		$this->set('themeDir',  'views' . DS . 'themes' . DS . $themeName );
+		$this->set('viewMode','app-data');
 		$plugins = '';
 		if(!empty($plugins))
 			$this->loadPlugins($plugins);
@@ -45,7 +44,7 @@ class Controller {
 	function view()
 	{
 	  	echo "Inside view action<br>";
-		$this->_template->render();
+		//$this->_template->render();
 	}
 
 

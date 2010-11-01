@@ -54,6 +54,34 @@ function unregisterGlobals()
 	}
 }
 
+function curPageURL() {
+	$pageURL = 'http';
+	if(array_key_exists("HTTPS", $_SERVER)) {
+		if ($_SERVER["HTTPS"] == "on") {$pageURL .= "s";}
+	}
+	$pageURL .= "://";
+	if ($_SERVER["SERVER_PORT"] != "80") {
+		$pageURL .= $_SERVER["SERVER_NAME"].":".$_SERVER["SERVER_PORT"].$_SERVER["REQUEST_URI"];
+	} else {
+		$pageURL .= $_SERVER["SERVER_NAME"].$_SERVER["REQUEST_URI"];
+	}
+	return $pageURL;
+}
+
+function curPageHost() {
+	$pageURL = 'http';
+	if(array_key_exists("HTTPS", $_SERVER)) {
+		if ($_SERVER["HTTPS"] == "on") {$pageURL .= "s";}
+	}
+	$pageURL .= "://";
+	if ($_SERVER["SERVER_PORT"] != "80") {
+		$pageURL .= $_SERVER["SERVER_NAME"].":".$_SERVER["SERVER_PORT"];
+	} else {
+		$pageURL .= $_SERVER["SERVER_NAME"];
+	}
+	return $pageURL;
+}
+
 function route()
 {
 	setReporting();
@@ -62,8 +90,9 @@ function route()
 	$qpacket = array();
 
 
-
 	/**read params and then unregisterGlobals()*/
+	$qpacket["pageHost"] = curPageHost();
+	$qpacket["pageURL"] = curPageURL();
 	$url = '';
 	if(isset($_GET['url']))
 	{
@@ -71,16 +100,18 @@ function route()
 	}
 	foreach ($_GET as $key => $value) {
 	  	$logger->debug('Get param: ' . $key.'='.$value);
-		$qpacket[$key] = $value;
+		$qpacket[$key] = urldecode($value);
 	}
 	foreach ($_POST as $key => $value) {
 	  	$logger->debug('Post param: ' . $key.'='.$value);
-		$qpacket[$key] = $value;
+		
+		$qpacket[$key] = urldecode($value);
 	}
 	
 	$body = @file_get_contents('php://input');
 	if(isset($body)) {
-		$logger->debug("body="  . $body);
+		//$logger->debug("body="  . $body);
+	  	$logger->debug('body ' . '='. strlen($body));
 		$qpacket['postBody'] = $body;
 	}
 	$qpacket["url"] = $url;
@@ -99,7 +130,7 @@ function route()
 	removeMagicQuotes();
 	unregisterGlobals();
 
-	$allControllers = array("app", "admin","about", "reco", "register");
+	$allControllers = array("app", "admin","about", "reco", "register","account");
 	//$allControllers = array( "reco");
 
 	$controllerName = getController($qpacket);

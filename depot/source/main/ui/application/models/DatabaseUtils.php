@@ -306,7 +306,61 @@ class DatabaseUtils
 	}
 
 	////////////////////User Info ///////////////////////////////
+	public static function addUserInfo($dbHandle, $authId, $authType, $name)
+	{
+		$logger = AppLogger::getInstance()->getLogger();
+		$query = "insert into UserInfo(auth_id, auth_type, name, created_at)  values('$authId', '$authType', '$name', NOW())";
+		$logger->debug("Executing query" .$query);
+		$result = mysql_query($query, $dbHandle);
+		if (!$result) {
+			$logger->error('Invalid query: ' . mysql_error());
+			return false;
+		}
+		return true;
+	}
 
+	public static function getUserInfoByAuth($dbHandle, $authId, $authType)
+	{
+		$query = "select * from UserInfo where auth_id='$authId' and auth_type='$authType'";
+		$result = self::getUserInfo($dbHandle, $query);
+		if(count($result) > 0)
+			return $result[0];
+		return null;
+	}
+	
+	public static function getUserInfoById($dbHandle, $userId)
+	{
+		$query = "select * from UserInfo where id=$id";
+		$result = self::getUserInfo($dbHandle, $query);
+		if(count($result) > 0)
+			return $result[0];
+		return null;
+	}
+
+	public static function getUserInfo($dbHandle, $query)
+	{
+		$logger = AppLogger::getInstance()->getLogger();
+		$logger->debug('Calling query ' . $query);
+		$result = mysql_query($query, $dbHandle);
+		if (!$result) {
+			$logger->error('Invalid query: ' . mysql_error());
+			return null;
+		}
+		$table = array();
+		if(!isset($result)) {
+			$logger->debug("Returned zero results for query: $query");
+			return $table;
+		}
+		$i = 0;	
+		while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) 
+		{
+			$table[$i] = $row;
+			$i++;
+		}
+		mysql_free_result($result);
+		return $table;
+
+	}
 
 
 	////////////////////////////////UserAppInfo ////////////////////////
@@ -316,6 +370,7 @@ class DatabaseUtils
 		$logger = AppLogger::getInstance()->getLogger();
 		$fbuid = $jsonObj->{'fbuid'};
 		$fbname = $jsonObj->{'fbname'};
+		$userid = $jsonObj->{'userid'};
 
 		$logger->debug("updating apps for user ". $fbuid . " " . $fbname );
 		$installedApps = $jsonObj->{'installedApps'};
@@ -323,6 +378,7 @@ class DatabaseUtils
 		foreach ($installedApps as $k => $v)
 		{
 			$installedAppMap[$v->{'itemId'} ] = $v;
+			$v->already_in_db = 0;
 		}
 		$appsInDB = self::getUserAppInfo($dbHandle, $fbuid);
 		$logger->debug("User" . $fbuid .'('.$fbname.')'.'has ' .count($appsInDB) . ' apps installed');
@@ -351,7 +407,7 @@ class DatabaseUtils
 				$v->purchaseDate = mysql_real_escape_string ($v->purchaseDate);
 
 
-				$query = "insert into UserAppInfo (fbuid, apple_id, app_external_id, app_name, purchased_date, present_now, updated_at, created_at)  values ('$fbuid', '$v->AppleID', '$v->itemId', '$v->itemName', '$v->purchaseDate', 1, NOW(), NOW())
+				$query = "insert into UserAppInfo (user_id, apple_id, app_external_id, app_name, purchased_date, present_now, verification_status, verified_date, updated_at, created_at)  values ('$userid', '$v->AppleID', '$v->itemId', '$v->itemName', '$v->purchaseDate', 1,0,NOW(), NOW(), NOW())
 				";
 				$logger->debug("executing query ". $query);
 				$result = mysql_query($query, $dbHandle);
@@ -391,7 +447,7 @@ class DatabaseUtils
 			$logger->debug("Returned zero results for query: $query");
 			return $table;
 		}
-		
+		$i = 0;	
 		while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) 
 		{
 			$table[$i] = $row;
