@@ -28,6 +28,9 @@ function print_post_info($post)
 	?> 
 	<td> <?php echo $post->appName; ?> </td>
 	<td> <?php echo $post->onDate;?> </td>
+	<td> <?php echo $post->tillDate;?> </td>
+	<td> <?php echo $post->appPrice;?> </td>
+	<td> <?php echo $post->refundPrice;?> </td>
 	<td> <?php echo $post->appReview->id ;?> </td>
 	<?php
 	

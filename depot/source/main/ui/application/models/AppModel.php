@@ -136,10 +136,14 @@ class AppModel
 
 	}
 
-	public function insertAppLineRecord($appId, $appReviewId, $appName, $onDate)
+	public function insertAppLineRecord($appId, $appReviewId, $appName, $onDate, $tillDate, $appPrice, $refundPrice)
 	{
+		if($tillDate == NULL || !isset($tillDate))
+			$tillDate = $onDate;
+		if($refundPrice == NULL || !isset($refundPrice)) 
+			$refundPrice = 0.0;
 	  	$dbHandle = DatabaseHandler::getInstance()->getHandle();
-		return DatabaseUtils::insertAppLineRecord($dbHandle, $appId, $appReviewId, $appName, $onDate);
+		return DatabaseUtils::insertAppLineRecord($dbHandle, $appId, $appReviewId, $appName, $onDate, $tillDate, $appPrice, $refundPrice);
 	}	
 
 	public function getAppSchedule($startDate, $endDate)

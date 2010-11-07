@@ -67,6 +67,9 @@ if((strcmp($action, "view_schedule") == 0)|| (strcmp($action,"fetch_review") == 
 			 <tr> 
 			 	<td> App Name</td>
 			 	<td> On Date </td>
+			 	<td> Till Date </td>
+			 	<td> App Price </td>
+			 	<td> Refund Price </td>
 				<td> App Review Id </td>
 			  </tr>
 			<?php foreach ($scheduledPosts as $post) {	?> 
@@ -100,6 +103,10 @@ if((strcmp($action, "view_schedule") == 0)|| (strcmp($action,"fetch_review") == 
 		App Name: <Input name="app_name" size="40" value="<?php if(isset($app_name)) echo $app_name; ?>" /><BR>
 		App Review Id: <Input name="app_review_id" size="40" value="<?php if(isset($app_review_id)) echo $app_review_id; ?>" /><BR>
 		Schedule date (YYYY-MM-DD):   <INPUT NAME="sched_on_date"   SIZE="40" value="<?php if(isset($sched_on_date)) echo $sched_on_date;?>" /> <BR>
+		Valid till date (YYYY-MM-DD) :   <INPUT NAME="sched_till_date"   SIZE="40" value="<?php if(isset($sched_till_date)) echo $sched_till_date;?>" /> (leave empty if it is same as schedule date)  <BR>
+		App Price: <Input name="app_price" size="40" value="<?php if(isset($app_price)) echo $app_price; else echo 0.0; ?>" /><BR>
+		Refund Price: <Input name="refund_price" size="40" value="<?php if(isset($refund_price)) echo $refund_price; else echo 0.0; ?>" />(default is 0.0)<BR>
+		
 		<input type="submit" value="Add Schedule" />
 	</form>
 

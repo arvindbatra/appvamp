@@ -56,6 +56,20 @@ class AppInfo
 		}
 
 
+		//clean price
+		if($this->price == NULL || !isset($this->price))
+			$this->price = 0.0;
+		else {
+			$priceLowerCase = (string) $this->price;
+			$priceLowerCase = strtolower($priceLowerCase);
+			$priceLowerCase = str_replace("$", "", $priceLowerCase);
+
+			if(strcmp ($priceLowerCase, 'free') == 0)
+				$this->price = 0.0;
+			$this->price = (float) $priceLowerCase;
+		}
+
+//	$logger->debug('price'. $this->price);
 	}
 
 

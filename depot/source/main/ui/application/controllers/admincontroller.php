@@ -116,11 +116,14 @@ class AdminController extends Controller
 		{
 		  	$this->logger->info("Querying db for app " . $appName);
 			$appReviewArr = $appModel->getAppReviews($appName);
+			$appInfo = $appModel->getAppInfo($appName);
 			if(isset($appReviewArr))
 				$this->set('appReviewArr', $appReviewArr);
+			if(isset($appInfo))
+			{
+				$this->set('app_price', $appInfo->price);
+			}
 		}
-
-
 	}
 
 
@@ -214,8 +217,11 @@ class AdminController extends Controller
 		$this->set('title', 'Submit review');
 		$appModel = new AppModel();
 		$appName = $this->get('app_name', '');
+		$appPrice = $this->get('app_price', 0.0);
+		$refundPrice = $this->get('refund_price', 0.0);
 		$appReviewId = $this->get('app_review_id','');
 		$scheduleOnDate = $this->get('sched_on_date','');
+		$scheduleTillDate = $this->get('sched_till_date','');
 		if(!isset($appName) || empty($appName))
 		{
 			$this->set('errorMsg', 'Error: App name not set');
@@ -249,11 +255,17 @@ class AdminController extends Controller
 		}	
 
 		if(!preg_match("/^([0-9]){4}\-([0-9]){2}\-([0-9]){2}$/i", $scheduleOnDate)) {
-			$this->set('errorMsg', 'Error in Schedule date format');
+			$this->set('errorMsg', 'Error in Schedule On date format');
+			return;
+		}
+		if(!isset($scheduleTillDate) || empty($scheduleTillDate))
+			$scheduleTillDate = $scheduleOnDate;
+		else if(!preg_match("/^([0-9]){4}\-([0-9]){2}\-([0-9]){2}$/i", $scheduleTillDate)) {
+			$this->set('errorMsg', 'Error in Schedule Till date format');
 			return;
 		}
 	
-		if($appModel->insertAppLineRecord($appInfo->id, $appReviewId, $appName, $scheduleOnDate))
+		if($appModel->insertAppLineRecord($appInfo->id, $appReviewId, $appName, $scheduleOnDate,$scheduleTillDate, $appPrice, $refundPrice))
 		{
 			$this->set("infoMsg", "App schedule record add successful");
 

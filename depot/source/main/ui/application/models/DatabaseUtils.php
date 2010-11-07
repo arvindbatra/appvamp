@@ -79,6 +79,9 @@ class DatabaseUtils
 			$appPost->createdAt = $row['created_at'];
 			$appPost->updatedAt = $row['updated_at'];
 			$appPost->onDate = $row['on_date'];
+			$appPost->tillDate = $row['till_date'];
+			$appPost->appPrice = $row['app_price'];
+			$appPost->refundPrice = $row['refund_price'];
 			
 			$appInfos = self::queryAppInfoById($dbHandle, $appId);
 			if(count($appInfos) >= 0)
@@ -208,10 +211,10 @@ class DatabaseUtils
 		return false;
 	}
 
-	public static function insertAppLineRecord($dbHandle, $appId, $appReviewId, $appName, $onDate)
+	public static function insertAppLineRecord($dbHandle, $appId, $appReviewId, $appName, $onDate, $tillDate, $appPrice, $refundPrice)
 	{
 		$logger = AppLogger::getInstance()->getLogger();
-		$query = "insert into AppLine(app_id, app_review_id, app_name,on_date, created_at, updated_at ) values ('$appId', '$appReviewId', '$appName', '$onDate', CURDATE(), CURDATE());" ;
+		$query = "insert into AppLine(app_id, app_review_id, app_name, app_price, refund_price, on_date, till_date, created_at, updated_at ) values ('$appId', '$appReviewId', '$appName', $appPrice, $refundPrice, '$onDate','$tillDate', CURDATE(), CURDATE());" ;
 		$logger->debug('Calling query ' . $query);
 		if(mysql_query($query, $dbHandle))
 		  	return true;

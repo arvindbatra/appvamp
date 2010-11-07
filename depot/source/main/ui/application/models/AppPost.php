@@ -9,6 +9,9 @@ class AppPost
 	public $appReview;
 	public $appName; 
 	public $onDate;
+	public $tillDate;
+	public $appPrice;
+	public $refundPrice;
 	public $createdAt;
 	public $updatedAt;
 
