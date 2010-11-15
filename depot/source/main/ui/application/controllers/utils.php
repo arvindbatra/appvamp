@@ -14,8 +14,8 @@ class Utils {
 		{
 			$logger->debug(json_encode($userInfoStr));
 			$userInfoJson = json_decode($userInfoStr);
-			$err = json_last_error();
-			$logger->error('error' . $err);
+		//	$err = json_last_error();
+		//	$logger->error('error' . $err);
 			$logger->debug(json_encode($userInfoJson));
 		//	$authType = $this->get("auth_type", "");
 			if(!isset($authType) || !isset($userInfoJson))
