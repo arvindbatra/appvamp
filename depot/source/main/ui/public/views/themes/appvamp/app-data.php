@@ -52,7 +52,8 @@
 				<table>
 				<tr>
 				<td>
-					<h4> Price:<?php echo $featuredPost->appInfo->price ?></h4>
+					<h4> Price: <?php if($featuredPost->appInfo->price != 0) 	echo $featuredPost->appInfo->price;
+							  else echo 'Free'; ?> </h4>
 				</td> <td>
 					<h4> Genre:<?php echo $featuredPost->appInfo->genre ?></h4>
 				</td></tr>
