@@ -56,6 +56,34 @@ class DatabaseUtils
 	}
 
 
+	public static function getOngoingAppDeals($dbHandle)
+	{
+		$logger = AppLogger::getInstance()->getLogger();
+		$query = "select al.* , ai.img_url from AppLine al, AppInfo ai  where al.app_id = ai.id and al.on_date<=NOW() and al.till_date >=NOW() order by on_date desc";
+		$logger->debug('Calling query: ' . $query);
+		$result = mysql_query($query, $dbHandle);
+		if (!$result) {
+			$logger->error('Invalid query: ' . mysql_error());
+			return null;
+		}
+		$table = array();
+		if(!isset($result)) {
+			$logger->debug("Returned zero results for query: $query");
+			return $table;
+		}
+		$i = 0;	
+		while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) 
+		{
+			$logger->debug(implode(",", $row));
+			$table[$i] = $row;
+			$i++;
+		}
+		mysql_free_result($result);
+		return $table;
+		
+	}
+
+
 	public static function queryAppLine($dbHandle, $query)
 	{
 		$logger = AppLogger::getInstance()->getLogger();
@@ -333,7 +361,7 @@ class DatabaseUtils
 	
 	public static function getUserInfoById($dbHandle, $userId)
 	{
-		$query = "select * from UserInfo where id=$id";
+		$query = "select * from UserInfo where id=$userId";
 		$result = self::getUserInfo($dbHandle, $query);
 		if(count($result) > 0)
 			return $result[0];
@@ -365,8 +393,77 @@ class DatabaseUtils
 
 	}
 
+	public static function updatePaypalAddressForUser($dbHandle, $userId, $paypalAddress)
+	{
+		$userId = mysql_real_escape_string($userId);
+		$paypalAddress = mysql_real_escape_string($paypalAddress);
+		$logger = AppLogger::getInstance()->getLogger();
+		$query = "update UserInfo set paypal_email_address='$paypalAddress' where id=$userId;";
+		$logger->debug('Calling query ' . $query);
+		$result = mysql_query($query, $dbHandle);
+		if (!isset($result) || $result == false) {
+			$logger->error('Invalid query: ' . mysql_error());
+			return false;
+		}
+		return true;
+
+	}
+
 
 	////////////////////////////////UserAppInfo ////////////////////////
+
+	public static function getUserAppInfosByAppNames($dbHandle, $userid, $appNames)
+	{
+		$logger = AppLogger::getInstance()->getLogger();
+		$query = "select * from UserAppInfo where user_id = '$userid' and app_name in ($appNames) order by created_at desc";
+		$logger->debug('Calling query ' . $query);
+		$result = mysql_query($query, $dbHandle);
+		if (!$result) {
+			$logger->error('Invalid query: ' . mysql_error());
+			return null;
+		}
+		$table = array();
+		if(!isset($result)) {
+			$logger->debug("Returned zero results for query: $query");
+			return $table;
+		}
+		$i = 0;	
+		while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) 
+		{
+			$logger->debug(implode(",", $row));
+			$table[$i] = $row;
+			$i++;
+		}
+		mysql_free_result($result);
+		return $table;
+	}
+
+
+	public static function getUserAppInfosInAppLine($dbHandle, $userid)
+	{
+		$logger = AppLogger::getInstance()->getLogger();
+		$query = "select uai.id, uai.app_name, uai.user_id, uai.verification_status,uai.purchased_date, uai.verified_date, al.on_date, al.till_date, al.app_price, al.refund_price, ai.img_url from UserAppInfo uai, AppLine al, AppInfo ai  where al.app_name = uai.app_name and uai.user_id = '$userid' and ai.id = al.app_id  order by al.on_date desc ";
+		$logger->debug('Calling query ' . $query);
+		$result = mysql_query($query, $dbHandle);
+		if (!$result) {
+			$logger->error('Invalid query: ' . mysql_error());
+			return null;
+		}
+		$table = array();
+		if(!isset($result)) {
+			$logger->debug("Returned zero results for query: $query");
+			return $table;
+		}
+		$i = 0;	
+		while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) 
+		{
+			$logger->debug(implode(",", $row));
+			$table[$i] = $row;
+			$i++;
+		}
+		mysql_free_result($result);
+		return $table;
+	}
 	
 	public static function updateUserAppInfo($dbHandle, $jsonObj)
 	{
@@ -410,7 +507,7 @@ class DatabaseUtils
 				$v->purchaseDate = mysql_real_escape_string ($v->purchaseDate);
 
 
-				$query = "insert into UserAppInfo (user_id, apple_id, app_external_id, app_name, purchased_date, present_now, verification_status, verified_date, updated_at, created_at)  values ('$userid', '$v->AppleID', '$v->itemId', '$v->itemName', '$v->purchaseDate', 1,0,NOW(), NOW(), NOW())
+				$query = "insert into UserAppInfo (user_id, apple_id, app_external_id, app_name, purchased_date, present_now, verification_status,  updated_at, created_at)  values ('$userid', '$v->AppleID', '$v->itemId', '$v->itemName', '$v->purchaseDate', 1,0,NOW(), NOW())
 				";
 				$logger->debug("executing query ". $query);
 				$result = mysql_query($query, $dbHandle);
@@ -429,10 +526,19 @@ class DatabaseUtils
 
 	}
 
-	public static function getUserAppInfo($dbHandle, $fbuid)
+
+	public static function getAcceptedApps($dbHandle, $userId)
 	{
-		$fbuid = mysql_real_escape_string($fbuid);
-		$query = "select * from UserAppInfo where fbuid = '$fbuid'";
+		$query = "select * from UserAppInfo where user_id = '$userId' and verification_status <> 0";
+
+		return self::queryUserAppInfo($dbHandle, $query);
+
+	}
+
+	public static function getUserAppInfo($dbHandle, $userId)
+	{
+		$userId = mysql_real_escape_string($userId);
+		$query = "select * from UserAppInfo where user_id = '$userId'";
 		return self::queryUserAppInfo($dbHandle, $query);
 	}
 
@@ -459,4 +565,51 @@ class DatabaseUtils
 		mysql_free_result($result);
 		return $table;
 	}
+	
+	
+	public function updateUserAppInfoStatus($dbHandle, $userId, $idArr, $newStatus)
+	{
+		$logger = AppLogger::getInstance()->getLogger();
+		foreach($idArr as $id=>$price)
+		{
+
+			$query = "update UserAppInfo set verification_status = $newStatus, value_received=$price , verified_date=NOW() where user_id=$userId and id = $id;";
+		
+			$logger->debug('Calling query ' . $query);
+			$result = mysql_query($query, $dbHandle);
+			if (!$result) {
+				$logger->error('Invalid query: ' . mysql_error());
+				return false;
+			}
+		}
+		return true;
+	}
+
+
+
+
+
+/*************UserPayoutTransactions ***************/
+
+
+	public function insertUserPayoutTransactions($dbHandle, $userId, $userAppInfoMap, $status)
+	{
+		$logger = AppLogger::getInstance()->getLogger();
+		foreach($userAppInfoMap as $userAppInfoId=>$price)
+		{
+
+			$query = "insert into UserPayoutTransactions(user_id, user_app_info_id, price, status, created_at) values($userId, $userAppInfoId, $price, '$status','CURDATE()')" ;
+		
+			$logger->debug('Calling query ' . $query);
+			$result = mysql_query($query, $dbHandle);
+			if (!$result) {
+				$logger->error('Invalid query: ' . mysql_error());
+				return false;
+			}
+		}
+		return true;
+	}
+
+
+	
 }

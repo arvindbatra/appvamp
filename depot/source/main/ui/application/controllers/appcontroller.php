@@ -32,6 +32,15 @@ class AppController extends Controller
 			$this->logger->info("Setting appName:". $appName);
 			$this->set('appName', $appName);
 		}
+		
+		$userInfoStr = $this->get("user_info",'');
+		$authType = $this->get("auth_type", "");
+		if(isset($userInfoStr) && isset($authType))
+		{
+			$userInfo = Utils::getOrCreateUserInfo($userInfoStr, $authType);
+			if($userInfo != null)
+				$this->set('userInfo', $userInfo);
+		}
 	}
 
 	function view()

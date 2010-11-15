@@ -385,6 +385,126 @@ body{color: #111; background: #708090;}
 
 
 
+
+
+/**************** user  *****************************/
+
+.user-post-body {
+	width: 980px;
+	float: left;
+	/* these are from body-box*/
+	margin: 0 20px 0px 20px;
+	padding-top: 20px;
+	padding-left: 10px;
+	padding-bottom: 20px;
+	margin-bottom: 3px;
+	margin-top: 3px;
+
+}
+
+.user-sidebar {float: left; width: 25%;}
+
+.user-sidebar .section 
+{
+	border-bottom: 2px dotted black;
+	font-size: 12pt;
+	padding-top: 5px;
+	padding-bottom: 10px;
+	margin-bottom: 5px;
+	padding-left: 2px;
+
+
+}
+
+.user-meta
+{
+
+}
+
+.user-meta li {
+	margin: 0;
+	color: #339;
+	font-weight: bold;
+	padding: 5px 0 5px 0;
+}
+.pay-me
+{
+	padding: 5px 5px 5px 5px;
+	margin: 5px 5px 5px 5px;
+	text-align:center;
+	font-size: 14pt;
+	font-weight: bold;
+	background-color: #9BE1FB;
+}	
+.read-apps
+{
+	padding: 5px 5px 5px 5px;
+	margin: 5px 5px 5px 5px;
+	text-align:center;
+	font-size: 14pt;
+	font-weight: bold;
+	
+}
+
+
+.user-content { 
+	float: left;
+	width: 65%;
+	text-align: justify;
+	position:relative;
+	font-size: 11pt;
+	line-height:15px;
+	margin: 0 0px 0px 20px;
+}
+
+
+.user-app-info
+{
+	font-size: 11pt;
+	padding: 10px 10px 5px 2px;
+	margin: 5px 10px 5px 2px;
+
+	background:white;
+	border: 2px solid black;
+	float: left;
+}
+.user-app-image {
+	margin: 10px 20px 0px 10px;
+	float: left;
+	/*width: 200px;*/
+	height:100px;
+}
+	.user-app-image img{
+		height: 80px;
+	}
+
+.user-app-meta{
+	float:left; 
+	width: 400px; 
+	padding: 10px;
+	font-size: 13pt;
+}
+	.user-app-meta .app-name {
+		line-height:140%;
+		font-size:14pt;
+	}
+	.user-app-meta div {
+		line-height:120%;
+
+	}
+	.user-app-meta div span {
+		float: left;
+		width:200px;
+	}
+
+
+
+
+
+
+
+
+
 /*************footer **************/
 
 .footer
@@ -422,7 +542,7 @@ body{color: #111; background: #708090;}
 
 /*************** Popup ********************************/
 
-#backgroundPopup{
+#backgroundPopup {
 	display:none;
 	position:fixed;
 	_position:absolute; /* hack for internet explorer 6*/
@@ -434,7 +554,7 @@ body{color: #111; background: #708090;}
 	border:1px solid #cecece;
 	z-index:2;
 }
-#popupContact{
+#popupContact, #popupPaypal {
 	display:none;
 	position:fixed;
 	_position:absolute; /* hack for internet explorer 6*/
@@ -446,7 +566,7 @@ body{color: #111; background: #708090;}
 	padding:12px;
 	font-size:13px;
 }
-#popupContact h1{
+#popupContact h1, #popupPaypal h1{
 	text-align:left;
 	color:#6FA5FD;
 	font-size:22px;
@@ -469,6 +589,74 @@ body{color: #111; background: #708090;}
 	text-align:center;
 	margin:100px;
 }
+
+#popupRefund {
+	display:none;
+	position:fixed;
+	_position:absolute; /* hack for internet explorer 6*/
+	height:384px;
+	width:408px;
+	background:#FFFFFF;
+	border:2px solid #cecece;
+	z-index:3;
+	padding:12px;
+	font-size:13px;
+}
+#popupRefund h1{
+	text-align:left;
+	color:#6FA5FD;
+	font-size:22px;
+	font-weight:700;
+	border-bottom:1px dotted #D3D3D3;
+	padding-bottom:2px;
+	margin-bottom:20px;
+}
+
+/******************Button styles ***********/
+/*Taken from http://www.filamentgroup.com/lab/styling_the_button_element_with_sliding_doors/ */
+button { 
+	border:0; 
+	cursor:pointer; 
+	font-weight:bold; 
+	padding:0 20px 0 0; 
+	text-align:center; 
+}
+button span { 
+	position:relative; 
+	display:block; 
+	white-space:nowrap; 
+	padding:0 0 0 20px; 
+}
+
+/*blue buttons*/
+button.submitBtn { 
+	  background:url(/images/btn_blue_right.gif) right no-repeat; 
+	    font-size:1.3em; 
+}
+button.submitBtn span { 
+	height:50px; 
+	line-height:50px;
+	background:url(/images/btn_blue_left.gif) left no-repeat;
+	color:#fff; 
+}
+button.submitBtn:hover {
+	background:url(/images/btn_blue_right_hover.gif) right no-repeat; 
+}
+button.submitBtn:hover span {
+	background:url(/images/btn_blue_left_hover.gif) left no-repeat; 
+}
+
+
+
+
+
+
+
+
+
+
+
+
 
 /*-----------------------------------------------------------------------------------------------------------------------------------*/
 /*- CLEARFIX --- * I prefer not to touch this code, I don't recommend you do so either, it works... so don't fix whats working ;) * -*/

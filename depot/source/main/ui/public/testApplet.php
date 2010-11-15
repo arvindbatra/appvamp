@@ -38,6 +38,8 @@ if ($me) {
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 	<title>appvamp.com</title>
 
+	<script src="http://www.java.com/js/deployJava.js"></script>
+
 	<script language="javascript" type="text/javascript">
 	function showApps(appData)
 	{
@@ -56,6 +58,14 @@ if ($me) {
 	{
 		var textarea = document.getElementById("userMessage");
 		textarea.textContent = message;
+	}
+	
+	function callProcess() 
+	{
+		var sapplet = document.getElementById("sapplet");
+		alert(sapplet);
+		sapplet.init();
+		sapplet.process();
 	}
 
 
@@ -121,15 +131,19 @@ if ($me) {
 
 
 
+
+
 applet goes here - 
 <br/>
-<Applet align="center" code="com.appvamp.applet.LocalFile.class" archive="/dist/SignedApplet.0.1.jar" width="400" height=200 MAYSCRIPT>
+<Applet id="sapplet" align="center" code="com.appvamp.applet.LocalFile.class" archive="/dist/SignedApplet.0.1.jar" width="400" height=200 MAYSCRIPT>
  <param name="fbuid" value="<?php echo $me['id']?>" >
  <param name="fbname" value="<?php echo $me['name']?>" >
 You do not have java installed.
-</applet>
+</Applet>
 <div id='userMessage' >
 </div>
+
+<a href="#" onClick="callProcess()">Say Hi</a>
 
 <p>
 Installed Apps: <br/>

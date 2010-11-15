@@ -1,3 +1,5 @@
+php_value session.save_path '/tmp/appvamp'
+
 <IfModule mod_rewrite.c>
 RewriteEngine on
 RewriteCond %{REQUEST_FILENAME} !-d

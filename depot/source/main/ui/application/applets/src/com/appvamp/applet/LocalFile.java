@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.lang.*;
 import java.text.*;
 import java.awt.event.*; 
+import java.awt.*; 
 import java.io.*;
 import com.appvamp.applet.nanoxml.*;
 import java.util.zip.*;
@@ -32,6 +33,7 @@ public class LocalFile extends Applet {
 	public String fbName;
 	public String userid;
 	public boolean showApps;
+	public int numAppsRead = 0;
 
 	public LocalFile() {
 		Panel p = new Panel();
@@ -43,7 +45,9 @@ public class LocalFile extends Applet {
 			f = new Font("Verdana",Font.BOLD,12);
 		}
 		p.setFont(f);
-		p.add(new Button("Read Apps"));
+		Button b = new Button("Read My Apps");
+		b.setSize(new Dimension (200, 200));
+		p.add(b);
 		
 		p.setBackground(new Color(255, 255, 255));
 		
@@ -73,74 +77,85 @@ public class LocalFile extends Applet {
 
 
 	public boolean action(Event evt, Object arg) {
-		if (arg.equals("Read Apps")) {
-			if(fbuid.isEmpty() )
+		if (arg.equals("Read My Apps")) {
+			return process();
+		}
+		else return false;
+	}
+
+	
+	public boolean process()
+	{
+		if(fbuid.isEmpty() )
+		{
+			String message = "Please login with facebook before pressing the sync button";
+			System.out.println(message);
+			notifyUser(message);
+			return false;
+		}
+		System.out.println("OPEN CLICKED");
+		System.out.println(this.userid);
+		String homedir = System.getProperty("user.home");
+		System.out.println(homedir);
+		String ostype = System.getProperty("os.name");
+		String username = System.getProperty("user.name");
+		notifyUser("Reading your apps. Please wait!");
+
+
+		System.out.println(ostype);
+		System.out.println(username);
+
+		String[] itunesdirs = { "iTunes Media" + File.separator + "Mobile Applications", 
+								"iTunes Music" + File.separator + "Mobile Applications", 
+								"Mobile Applications" 
+								};
+
+		String itunesbase = "";
+		if ((ostype.equals("Windows 7")) || (ostype.equals("Windows Vista"))) {
+			itunesbase = homedir + File.separator + joinPath(new String[] { "Music", "iTunes" }, File.separator) + File.separator;
+		}
+		else if (ostype.startsWith("Win")) {
+			itunesbase = joinPath(new String[] { "C:", "Documents and Settings", username, "My Documents", "My Music", "iTunes" }, File.separator) + File.separator;
+		}
+		else if (ostype.startsWith("Mac")) {
+			itunesbase = homedir + File.separator + "Music" + File.separator + "iTunes" + File.separator;
+		}
+		else
+		{
+			System.out.println("Can not find installed apps. Sorry!");
+			notifyUser("We are extremely sorry, we do not recognize your operating system at the moment. Please contact us at contact@appvamp.com to resolve this issue. Thanks!");
+			return false;
+		}
+	
+		List<File> appDirs = new ArrayList<File>();
+		if(!itunesbase.isEmpty())
+		{
+			for(int i=0; i<itunesdirs.length; i++)
 			{
-				String message = "Please login with facebook before pressing the sync button";
-				System.out.println(message);
-				notifyUser(message);
-				return false;
-			}
-			System.out.println("OPEN CLICKED");
-			String homedir = System.getProperty("user.home");
-			String ostype = System.getProperty("os.name");
-			String username = System.getProperty("user.name");
-
-
-			System.out.println(homedir);
-			System.out.println(ostype);
-			System.out.println(username);
-
-			String[] itunesdirs = { "iTunes Media" + File.separator + "Mobile Applications", 
-									"iTunes Music" + File.separator + "Mobile Applications", 
-									"Mobile Applications" 
-									};
-
-			String itunesbase = "";
-			if ((ostype.equals("Windows 7")) || (ostype.equals("Windows Vista"))) {
-				itunesbase = homedir + File.separator + joinPath(new String[] { "Music", "iTunes" }, File.separator) + File.separator;
-			}
-			else if (ostype.startsWith("Win")) {
-				itunesbase = joinPath(new String[] { "C:", "Documents and Settings", username, "My Documents", "My Music", "iTunes" }, File.separator) + File.separator;
-			}
-			else if (ostype.startsWith("Mac")) {
-				itunesbase = homedir + File.separator + "Music" + File.separator + "iTunes" + File.separator;
-			}
-			else
-			{
-				System.out.println("Can not find installed apps. Sorry!");
-				notifyUser("We are extremely sorry, we do not recognize your operating system at the moment. Please contact us at contact@appvamp.com to resolve this issue. Thanks!");
-				return false;
-			}
-		
-			List<File> appDirs = new ArrayList<File>();
-			if(!itunesbase.isEmpty())
-			{
-				for(int i=0; i<itunesdirs.length; i++)
-				{
-					File f = new File(itunesbase + itunesdirs[i]);
-					if ((f.exists()) && (f.isDirectory())) {
-						appDirs.add(f);
-					}
+				File f = new File(itunesbase + itunesdirs[i]);
+				if ((f.exists()) && (f.isDirectory())) {
+					appDirs.add(f);
 				}
 			}
-			
-			if(appDirs.size() == 0)
-			{
-				System.out.println("Can not find installed apps. Sorry!");
-				notifyUser("We are extremely sorry, we could not find any installed apps at the moment. Please contact us at contact@appvamp.com to resolve this issue. Thanks!");
-				return false;
+		}
+		
+		if(appDirs.size() == 0)
+		{
+			System.out.println("Can not find installed apps. Sorry!");
+			notifyUser("We are extremely sorry, we could not find any installed apps at the moment. Please contact us at contact@appvamp.com to resolve this issue. Thanks!");
+			return false;
 
-			}
-			boolean success = checkAndReadApps(appDirs);
-			if(!success)
-			{
-				notifyUser("We are extremely sorry, we could not read your installed apps at the moment. Please contact us at contact@appvamp.com to resolve this issue. We appeciate your patience!");
-				return false;
-			}
-
-		} else return false;
+		}
+		boolean success = checkAndReadApps(appDirs);
+		if(!success)
+		{
+			notifyUser("We are extremely sorry, we could not read your installed apps at the moment. Please contact us at contact@appvamp.com to resolve this issue. We appeciate your patience!");
+			return false;
+		}
+		
+		notifyUser("Succesfully read " + numAppsRead + " apps!");
 		return true;
+
 	}
 
 
@@ -183,6 +198,7 @@ public class LocalFile extends Applet {
 					arr.add(appDataList.poll());
 
 				}
+				numAppsRead = arr.size();
 				System.out.println("sz" + arr.size());
 				int offset = 40;	//40 apps at a time. 
 				for(int chunker = 0; chunker < arr.size(); chunker += offset)

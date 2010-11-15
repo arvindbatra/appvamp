@@ -1,3 +1,7 @@
+
+
+
+
 ##create the user table
 create table if not exists UserInfo  (
 	id int not null auto_increment primary key,

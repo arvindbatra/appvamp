@@ -17,7 +17,12 @@ function print_app_info($appInfo)
 	<?php 	
 }
 
-
+function pretty_date($date)
+{
+	$phpdate = strtotime( $date ); 
+	$formattedDate = date('d M Y', $phpdate);
+	return  $formattedDate; 
+}
 
 
 function print_post_info($post)

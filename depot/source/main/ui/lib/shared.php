@@ -41,7 +41,8 @@ function unregisterGlobals()
 {
 	if (ini_get('register_globals')) 
 	{
-		$array = array('_SESSION', '_POST', '_GET', '_COOKIE', '_REQUEST', '_SERVER', '_ENV', '_FILES');
+		//$array = array('_SESSION', '_POST', '_GET', '_COOKIE', '_REQUEST', '_SERVER', '_ENV', '_FILES');
+		$array = array( '_POST', '_GET', '_COOKIE', '_REQUEST', '_SERVER', '_ENV', '_FILES');
 		foreach ($array as $value) 
 		{
 			foreach ($GLOBALS[$value] as $key => $var) {
@@ -98,6 +99,11 @@ function route()
 	{
 		$url = $_GET['url'];
 	}
+	foreach ($_SESSION as $key => $value) {
+	  	$logger->debug('Get param: ' . $key.'='.$value);
+		$qpacket[$key] = urldecode($value);
+	}
+
 	foreach ($_GET as $key => $value) {
 	  	$logger->debug('Get param: ' . $key.'='.$value);
 		$qpacket[$key] = urldecode($value);
@@ -167,8 +173,6 @@ function getController($qpacket)
 	}
 	return $url;
 }
-
-
 
 
 /** Autoload any classes that are required **/

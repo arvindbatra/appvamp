@@ -22,16 +22,13 @@
 			</div>
 			<br>
 		</div>
-		<?php /*<div class="featured-verify">
+		 <div class="featured-verify">
 			<br/>	
-			<div class="curved-box download-app">
-				<div id="verify-app" loggedin="<?php echo $loggedin?>"><input type="submit" value="Verify App Download" /></div>
-				<form action="<?php echo $pageHost?>/account" id="submit-verify-app" method="post" >
-					<input type="hidden" name="user_info" value="<?php echo urlencode(json_encode($me))?>">
-					<input type="hidden" name="auth_type" value="facebook">
-				</form>
+			<div class="download-app">
+				Click here to get paid for apps you've downloaded, and to see your past apps
+			<button id="verify-app" value="submit" class="submitBtn" ><span>Verify apps</span></button>
 			</div>
-		</div> */?>
+		</div> 
 
 	</div> <!-- end featured  -->
 	<div class="post-body ">

@@ -1,5 +1,7 @@
 <?php
 
+
+
 if(isset($viewMode))
 {
 	require_once($themeDir . DS. $viewMode .'.php');

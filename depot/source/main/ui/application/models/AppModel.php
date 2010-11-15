@@ -62,6 +62,12 @@ class AppModel
 */
 	}
 
+	public function getOngoingDeals()
+	{
+	  	$dbHandle = DatabaseHandler::getInstance()->getHandle();
+		return DatabaseUtils::getOngoingAppsDeals($dbHandle);
+	}
+
 	public function fetchApp($appUrl)
 	{
 		$qpacket = array();

@@ -1,5 +1,6 @@
 <?php
 
+include (ROOT . DS . 'application' . DS . 'controllers' . DS .  'utils.php');		 
 
 class Controller {
 	protected $_conttollerName;

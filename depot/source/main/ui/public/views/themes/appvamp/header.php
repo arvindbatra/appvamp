@@ -22,7 +22,8 @@
   })();
 </script>
 
-<?php $me = null;
+<?php 
+$me = null;
 $facebook = new Facebook(array(
   'appId'  => FACEBOOK_APP_ID,
   'secret' => FACEBOOK_SECRET,
@@ -36,11 +37,12 @@ if ($session) {
   try {
     $uid = $facebook->getUser();
     $me = $facebook->api('/me');
+	$_SESSION['user_info'] = json_encode($me);
+	$_SESSION['auth_type'] = 'facebook';
   } catch (FacebookApiException $e) {
     error_log($e);
   }
 }
-
 
 // login or logout url will be needed depending on current user state.
 $loggedin = false;
@@ -52,11 +54,20 @@ if ($me) {
 	$loginUrl = $facebook->getLoginUrl();
 }
 
+if(isset($userInfo)) {
+	$_SESSION['appvamper_id'] = $userInfo['id'];
+}
+
+
 ?>
 </head>
 <body>
 <?php require_once ("$themeDir/login-popup.php"); ?>
-<div id="fb-root"></div>
+<div id="fb-root" loggedin="<?php echo $loggedin?>" >
+	<input type="hidden" id="user_info" name="user_info" value="<?php echo urlencode(json_encode($me))?>">
+	<input type="hidden" id="auth_type" name="auth_type" value="facebook">
+
+</div>
 <script>
   window.fbAsyncInit = function() {
 	FB.init({appId: '156605134369786', 
@@ -106,12 +117,11 @@ if ($me) {
 	<div class="header-box clearfix" >
 		<ul class="nav">
 			<li><a href="/">App of the day</a></li>
-			<?php /*if ($loggedin == true){ ?>
+			<?php if ($loggedin == true){ ?>
 				<li><a href="/account" >Manage apps</a> </li>
 			<?php } else {?>
 				<li><a href="/about/so-just-what-is-a-vamp">So just what is a Vamp ?</a></li>
-			<?php } */?>
-				<li><a href="/about/so-just-what-is-a-vamp">So just what is a Vamp ?</a></li>
+			<?php } ?>
 
 			<li><a href="/about/the-team">The Team</a></li>
 			<li><a href="/about/reach-out-and-touch-me">Reach out and Touch Me</a></li>
