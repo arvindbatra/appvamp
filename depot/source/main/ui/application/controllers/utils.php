@@ -10,12 +10,12 @@ class Utils {
 		$logger = AppLogger::getInstance()->getLogger();
 		//$userInfoStr = $this->get("user_info",'');
 		$userModel = new UserModel();
-		if(isset($userInfoStr))
+		if(isset($userInfoStr) && !empty($userInfoStr))
 		{
 			$logger->debug(json_encode($userInfoStr));
 			$userInfoJson = json_decode($userInfoStr);
 			$err = json_last_error();
-			$logger->debug('error' . $err);
+			$logger->error('error' . $err);
 			$logger->debug(json_encode($userInfoJson));
 		//	$authType = $this->get("auth_type", "");
 			if(!isset($authType) || !isset($userInfoJson))
