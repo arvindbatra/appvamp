@@ -25,10 +25,9 @@
 			<br>
 		</div>
 		 <div class="featured-verify">
-			<br/>	
 			<div class="download-app">
-				Click here to get paid for apps you've downloaded, and to see your past apps
-			<button id="verify-app" value="submit" class="submitBtn" ><span>Verify apps</span></button>
+				Click here to get paid for apps you've downloaded, and to see your past apps <p><br/></p>
+			<button id="verify-app" value="submit" class="submitBtn" ><span>Verify Apps</span></button>
 			</div>
 		</div> 
 
