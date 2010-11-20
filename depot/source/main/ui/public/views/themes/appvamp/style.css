@@ -85,7 +85,11 @@ a:hover{}
 /**body{color: #111; background: #7DBAEA;}**/
 body{color: #111; background: #708090;}
 
-#container {}
+#container 
+{
+	text-align: center;	
+}
+
 
 .light-grey
 {
@@ -105,6 +109,7 @@ body{color: #111; background: #708090;}
 	background-position:center;
 	position:relative;
 	margin: auto;
+	text-align: left;	
 	
 }
 
@@ -322,7 +327,7 @@ body{color: #111; background: #708090;}
 
 
 .post-body {
-	width: 980px;
+	/**width: 980px;**/
 	float: left;
 	
 }

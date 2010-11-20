@@ -2,7 +2,6 @@
 	</div>	<!-- end body-container -->
 </div>		<!-- end dark-grey-->
 
-</div>
 
 <div id="footer-container">
 	<div class="footer clearfix">
@@ -15,5 +14,6 @@
 
 	</div>
 </div>
+</div>		<!-- End container-->
 </body>
 </html>
