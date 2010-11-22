@@ -82,7 +82,8 @@ public class AppFetcher {
 		Properties prop = Utils.loadProperties("default.properties");		
 		AppFetcher fetcher = new AppFetcher();
 		
-		String seedURL = "http://www.appvamp.com/ihandy-flashlight-free/";
+		//String seedURL = "http://www.appvamp.com/ihandy-flashlight-free/";
+		String seedURL = "http://itunes.apple.com/us/app/the-weather-channel/id295646461?mt=8";
 	
 		fetcher.fetchApp(seedURL);
 	}

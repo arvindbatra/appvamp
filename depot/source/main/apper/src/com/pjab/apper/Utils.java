@@ -6,6 +6,7 @@ import java.io.FileReader;
 import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.*;
 import java.io.ByteArrayInputStream;
 import java.lang.StringBuffer;
 import java.util.zip.GZIPInputStream;
@@ -61,7 +62,11 @@ public class Utils {
 
 
 	public static String readFile( String file ) throws IOException {
-	    BufferedReader reader = new BufferedReader( new FileReader (file));
+	   
+	   //BufferedReader reader = new BufferedReader( new FileReader (file));
+	   String encoding = "UTF8";
+	   InputStream fs = new FileInputStream(file);
+	   BufferedReader reader = new BufferedReader( new InputStreamReader(fs, encoding));
 	    String line  = null;
 	    StringBuilder stringBuilder = new StringBuilder();
 	    String ls = System.getProperty("line.separator");
@@ -77,11 +82,14 @@ public class Utils {
 	{
 		try {
 			System.out.println("Writing app to file " + filename);
-			FileWriter fstream = new FileWriter( filename);
-			BufferedWriter out = new BufferedWriter(fstream);
+		//	FileWriter fstream = new FileWriter( filename);
+			Writer out = new BufferedWriter(new OutputStreamWriter(
+			            new FileOutputStream(filename), "UTF8"));
+
+		//	BufferedWriter out = new BufferedWriter(fstream);
 			out.write(data);
 			out.close();
-			fstream.close();
+			//fstream.close();
 		} catch(IOException ioe)
 		{
 			

@@ -23,6 +23,7 @@ public class DatabaseConfig
 	{
 		try {
 			String url = "jdbc:mysql://" + SERVER_HOST + "/" + DATABASE_NAME + "?useUnicode=yes&characterEncoding=UTF-8";
+			//String url = "jdbc:mysql://" + SERVER_HOST + "/" + DATABASE_NAME + "?useUnicode=true&characterEncoding=UTF-8";
 		    Class.forName ("com.mysql.jdbc.Driver");
 		    
 		    conn = DriverManager.getConnection (url, ROOT_USER, ROOT_PASSWD);

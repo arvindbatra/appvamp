@@ -59,7 +59,8 @@ public class AppParser
 	{
 		
 		Tidy tidy = new Tidy();
-		String output = Utils.RemoveTroublesomeCharacters(content);
+		//String output = Utils.RemoveTroublesomeCharacters(content);
+		String output = content;
 
 		tidy.setInputEncoding("utf8");
 		tidy.setXmlOut(true);
@@ -68,7 +69,7 @@ public class AppParser
 		tidy.setKeepFileTimes(true);
 		tidy.setSmartIndent(true);
 		
-		//tidy.setOutputEncoding("utf8");
+		tidy.setOutputEncoding("utf8");
 		//tidy.setXmlPi(true);
 		tidy.setShowWarnings(false);
 		StringReader reader = new StringReader(output);

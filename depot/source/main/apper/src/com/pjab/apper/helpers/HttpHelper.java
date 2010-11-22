@@ -1,6 +1,9 @@
 package com.pjab.apper.helpers;
 
 
+import java.nio.charset.Charset;
+
+import com.pjab.apper.helpers.*;
 import org.apache.http.Header;
 import org.apache.http.HeaderElement;
 import org.apache.http.HttpEntity;
@@ -35,6 +38,7 @@ import org.apache.http.params.HttpParams;
 import org.apache.http.protocol.HTTP;
 import org.apache.http.protocol.HttpContext;
 
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
@@ -43,6 +47,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.zip.GZIPInputStream;
+import java.io.ByteArrayOutputStream;
+import java.lang.String;
 
 /**
  * Apache HttpClient helper class for performing HTTP requests.
@@ -107,14 +113,34 @@ public class HttpHelper {
       });
    }
 
-   private final ResponseHandler<String> responseHandler;
+	private final ResponseHandler<String> responseHandler;
+
+	public static class MyResponseHandler<String> implements ResponseHandler
+	{
+		public String handleResponse(HttpResponse response)
+		{	
+		 	try {
+			HttpEntity entity = response.getEntity();
+		 	ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+		 	entity.writeTo(buffer);
+
+			return (String) buffer.toString("utf-8");
+			}catch(Exception e)
+			{
+				e.printStackTrace();
+				return (String) "";
+			}
+
+		}
+	}
 
    /**
     * Constructor.
     *
     */
    public HttpHelper() {
-      responseHandler = new BasicResponseHandler();
+      //responseHandler = new BasicResponseHandler();
+      responseHandler = new MyResponseHandler();
    }
 
    /**
@@ -232,13 +258,51 @@ public class HttpHelper {
       String response = null;
       // execute method returns?!? (rather than async) - do it here sync, and wrap async elsewhere
       try {
-         response = HttpHelper.client.execute(method, responseHandler);
+         //response = HttpHelper.client.execute(method, responseHandler);
+         HttpResponse httpResponse = HttpHelper.client.execute(method);
+		 boolean gzip = false;
+			HttpEntity entity = httpResponse.getEntity();
+            Header contentEncodingHeader = entity.getContentEncoding();
+         /*   if (contentEncodingHeader != null) {
+               HeaderElement[] codecs = contentEncodingHeader.getElements();
+               for (int i = 0; i < codecs.length; i++) {
+                  if (codecs[i].getName().equalsIgnoreCase(HttpHelper.GZIP)) {
+                     entity = new GzipDecompressingEntity(httpResponse.getEntity());
+					 System.out.println(codecs[i].getName());
+					 System.out.println("arv_here");
+             //        return;
+                  }
+				}
+			}*/
+	//		entity = httpResponse.getEntity();
+			InputStream is = entity.getContent();
+
+			ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+			int nRead;
+			byte[] data = new byte[16384];
+			while ((nRead = is.read(data, 0, data.length)) != -1) {
+				  buffer.write(data, 0, nRead);
+			}
+
+			buffer.flush();
+			byte[] bytes =  buffer.toByteArray();
+			Charset UTF8_CHARSET = Charset.forName("UTF-8");
+			String resp = new String(bytes, UTF8_CHARSET);
+			
+			//System.out.println("Arv2_" + resp);
+
+
+         
+			return resp;
+
+
+
       } catch (ClientProtocolException e) {
          response = HttpHelper.HTTP_RESPONSE_ERROR + " - " + e.getClass().getSimpleName() + " " + e.getMessage();
-         //e.printStackTrace();
+         e.printStackTrace();
       } catch (IOException e) {
          response = HttpHelper.HTTP_RESPONSE_ERROR + " - " + e.getClass().getSimpleName() + " " + e.getMessage();
-         //e.printStackTrace();
+         e.printStackTrace();
       }
       return response;
    }
