@@ -61,6 +61,7 @@ function get_seo_string($string)
 	$newS = str_replace("-", "hyphen", $string);
 	$newS = str_replace("+", "plus", $newS);
 	$newS = str_replace(" ", "-", $newS);
+	$newS = str_replace("&", "and", $newS);
 	return $newS;
 
 }
@@ -70,6 +71,7 @@ function parse_seo_string($string)
 	$newS = str_replace("-", " ", $string);
 	$newS = str_replace("hyphen", "-", $newS);
 	$newS = str_replace("plus", "+", $newS);
+	$newS = str_replace("and", "&", $newS);
 	return $newS;
 
 }
