@@ -35,6 +35,7 @@ class DatabaseHandler
 		{
 			if(mysql_select_db($name, $this->_dbHandle))
 			{
+				mysql_set_charset('utf8', $this->_dbHandle);
 				return true;
 			}
 		  	else
