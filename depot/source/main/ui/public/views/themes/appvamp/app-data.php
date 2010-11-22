@@ -15,7 +15,7 @@
 			<h2> <?php echo $featuredPost->appName; ?> 
 			</h2>
 			<h4> <?php echo $featuredPost->appInfo->appSeller ?></h4>
-			<h4> Price: <?php if($featuredPost->appInfo->price != 0) 	echo '$' . $featuredPost->appInfo->price;
+			<h4> Price: <?php if($featuredPost->appPrice != 0) 	echo '$' . $featuredPost->appPrice;
 							  else echo 'Free';
 			?></h4>
 			<h4> Genre: <?php echo $featuredPost->appInfo->genre ?></h4>
