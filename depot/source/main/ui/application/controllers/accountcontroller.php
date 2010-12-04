@@ -252,6 +252,7 @@ class AccountController extends Controller
 		$themeName = 'simpleResponse';
 		$this->set('themes', $themeName);
 		$this->set('themeDir',  '/views' . DS . 'themes' . DS . $themeName );
+		$this->set('responseString', 'false');
 		
 		$paypalAddrStr = $this->get("paypal_email_address",'');
 		$userId = $this->get("user_id", '');
@@ -270,7 +271,8 @@ class AccountController extends Controller
 		}
 
 		$ret = $userModel->updateUserPaypalAddress($userInfo, $paypalAddrStr);
-		if(isset($ret) && $ret == true)
+		$this->logger->debug("Paypal update - return value:". $ret);
+		if(isset($ret) && ($ret == true || $ret == 1))
 		{
 			$this->set('responseString', 'true');
 		}
