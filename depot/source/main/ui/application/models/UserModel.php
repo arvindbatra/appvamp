@@ -90,7 +90,7 @@ class UserModel
 		for($i=0; $i<count($appPostArr); $i++)
 		{
 			$appPost = &$appPostArr[$i];
-			$appName = $appPost['app_name'];
+			$appName = trim($appPost['app_name']);
 			$appPost['status'] = 'pending';
 			$logger->debug("ongoing deal for " . $appName);
 			$userRelevantAppArr[strtolower($appName)] = $appPost;
@@ -111,7 +111,7 @@ class UserModel
 		{
 			$userApp = $userApps[$i];
 			$verificationStatus = $userApp['verification_status'];
-			$appName = strtolower($userApp['app_name']);
+			$appName = trim(strtolower($userApp['app_name']));
 			$logger->debug($appName . ' ' . $verificationStatus);
 			$userRelevantAppInfo = &$userRelevantAppArr[$appName];
 			if(!isset($userRelevantAppInfo))
