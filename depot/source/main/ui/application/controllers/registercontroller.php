@@ -24,8 +24,8 @@ class RegisterController extends Controller
 		$jsonContent =  urldecode  ($this->get('postBody', '') );
 		//$this->logger->debug($jsonContent);
 		$jsonObj = json_decode($jsonContent);
-		$err = json_last_error();
-		$this->logger->debug('error' . $err);
+		//$err = json_last_error();
+		//$this->logger->debug('error' . $err);
 		if(isset ($jsonObj)) {
 			$this->logger->debug ( 'fbuid'.$jsonObj->{'fbuid'});
 			$this->logger->debug ( 'fbname'.$jsonObj->{'fbname'});
