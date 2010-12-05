@@ -8,6 +8,7 @@
 //SETTING UP OUR POPUP
 //0 means disabled; 1 means enabled;
 var popupStatus = 0;
+var reloadOnClose = 0;
 
 //loading popup with jQuery magic!
 function loadPopup(  popupElem){
@@ -31,6 +32,10 @@ function disablePopup(popupElem){
 		//$("#popupContact").fadeOut("slow");
 		$(popupElem).fadeOut("slow");
 		popupStatus = 0;
+		if(reloadOnClose == 1) {
+			reloadOnClose = 0;
+			window.location.reload(true);
+		}
 	}
 }
 
@@ -77,6 +82,7 @@ function updatePaypalAddress()
 		data: 	"user_id=" + document.getElementById("popupPaypal_user_id").value + 
 				"&paypal_email_address=" + document.getElementById("popupPaypal_email_address").value,
 		success: function(html){
+			alert(html);
 			if(html == 'true')
 				$("#update_paypal_address_response").html("<i>Successfully updated paypal address!</i>");
 			else
@@ -145,6 +151,7 @@ $(document).ready(function(){
 	$("#refund-user").click(function()
 	{
 		popupElem = "#popupRefund";
+		reloadOnClose = 1;
 		refundUser(popupElem);
 		centerPopup(popupElem);
 		loadPopup(popupElem);
