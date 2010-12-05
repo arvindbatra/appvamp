@@ -25,7 +25,7 @@
 			</ul>
 			</div>
 			
-			<button id="refund-user" value="submit" class="submitBtn" onclick="refundUser()"><span>Pay me, Sucka!</span></button>
+			<button id="refund-user" value="submit" class="submitBtn" ><span>Pay me, Sucka!</span></button>
 
 			<div class="section"> &nbsp;
 			</div>
