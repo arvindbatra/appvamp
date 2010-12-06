@@ -5,8 +5,10 @@
 <script language="javascript" type="text/javascript">
 	function showMessage(message)
 	{
-		var textarea = document.getElementById("userMessage");
-		textarea.textContent = message;
+		var textarea = document.getElementById('userMessage');
+		//textarea.textContent = message;
+		textarea.innerHTML = message;
+
 	}
 </script>
 
