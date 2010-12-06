@@ -148,9 +148,9 @@ body{color: #111; background: #708090;}
  	padding: 0px; margin: 0px;
 	padding-left: 40px;
 	height: 40px;
-	margin: 30px 0 0;
+	margin: 10px 0 0;
 	padding-top: 20px;
-	line-height: 24px;
+	line-height: 40px;
 }
 
 .header h1 {
@@ -201,7 +201,7 @@ body{color: #111; background: #708090;}
 	border: 2px solid black;
 	z-index:2;
 	position:relative;
-	height: 80px;
+	height: 60px;
 	margin: 0 40px 0px 40px;
   	-moz-border-radius: 20px; 
 	-webkit-border-radius: 20px;
@@ -210,11 +210,13 @@ body{color: #111; background: #708090;}
 	/**background-color: #3C96DF;**/
 	background-color: #7DBAEA;
 	background-color: #9BE1FB;
+	font-weight:bold; 
 }
 
 	.nav {
 		margin:0;
-		padding-top: 20px;
+		padding-top: 5px;
+		/**margin-top: 5px;**/
 		float:left;
 		width:100%;
 		font-size: 13pt;
