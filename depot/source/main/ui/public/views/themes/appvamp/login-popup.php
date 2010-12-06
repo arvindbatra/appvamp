@@ -25,7 +25,7 @@
 	<p id="contactArea">
 		Appvamp would like to scan apps from your collection.  Please click the button below. Your browser may ask you to confirm security of this app.
 		<div class="read-apps">
-			<Applet align="center" code="com.appvamp.applet.LocalFile.class" archive="/dist/SignedApplet.0.1.jar" width="150" height="50" MAYSCRIPT>
+			<Applet align="center" code="com.appvamp.applet.LocalFile.class" archive="/dist/SignedApplet.0.2.jar" width="150" height="50" MAYSCRIPT>
 				 <param name="fbuid" value="<?php echo $me['id']?>" >
 			 	<param name="fbname" value="<?php echo $me['name']?>" >
 				 <param name="userid" value="<?php echo $userInfo['id']?>" >
