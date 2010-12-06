@@ -215,7 +215,7 @@ class AccountController extends Controller
 			$payoutReturn = $userModel->insertUserPayoutTransactions($userId, $ids, 'pending');	
 			if($payoutReturn == true)
 			{
-				$this->set('responseString', "Hooray! We have sent a payment of \$" . $sumPending . " to your Paypal account at ". $userInfo['paypal_email_address']);
+				$this->set('responseString', "Hooray! We have sent a payment of \$" . number_format($sumPending,2) . " to your Paypal account at ". $userInfo['paypal_email_address']);
 				return;
 			}
 			else

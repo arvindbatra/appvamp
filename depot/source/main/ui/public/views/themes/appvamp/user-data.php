@@ -21,7 +21,7 @@
 				<li>Available moolah: <br/> <span id="sum_pending">$<?php if(isset($sumPending) ) echo number_format($sumPending, 2); else echo 0.00;?></span> </li>
 				<li>Verified  moolah: <br/> $<?php if(isset($sumVerified) ) echo number_format($sumVerified, 2); else echo 0.00;?></span> </li>
 				<li>Accepted Apps:<br/> <?php if(isset($numAccepted)) echo $numAccepted; else echo 0; ?> </li>
-				<li>Cold hard cash you have saved:<br/> $<?php if(isset($sumAccepted)) echo $sumAccepted; else echo 0; ?> </li>
+				<li>Cold hard cash you have saved:<br/> $<?php if(isset($sumAccepted)) echo number_format($sumAccepted,2); else echo 0.00; ?> </li>
 			</ul>
 			</div>
 			
