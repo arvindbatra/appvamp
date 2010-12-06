@@ -25,7 +25,7 @@
 			</ul>
 			</div>
 			
-			<button id="refund-user" value="submit" class="submitBtn"> <span>Pay me, Sucka!</span></button>
+			<button id="refund-user" value="submit" class="submitBtn" refundSum="<?php if(isset($sumVerified) ) echo $sumVerified; else echo 0.00;?> "> <span>Pay me, Sucka!</span></button>
 
 			<div class="section"> &nbsp;
 			</div>

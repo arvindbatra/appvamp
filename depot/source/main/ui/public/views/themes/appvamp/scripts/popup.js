@@ -150,11 +150,22 @@ $(document).ready(function(){
 
 	$("#refund-user").click(function()
 	{
+		var refundUserDiv = $("#refund-user");
+		var refundSum = refundUserDiv.attr("refundSum");
 		popupElem = "#popupRefund";
-		reloadOnClose = 1;
-		refundUser(popupElem);
-		centerPopup(popupElem);
-		loadPopup(popupElem);
+		if(refundSum == 0)
+		{
+			centerPopup(popupElem);
+			loadPopup(popupElem);
+			$("#refund_response").html("You do not have any verified moolah at this time.");	
+		}
+		else 
+		{
+			reloadOnClose = 1;
+			refundUser(popupElem);
+			centerPopup(popupElem);
+			loadPopup(popupElem);
+		}
 
 	});
 				
