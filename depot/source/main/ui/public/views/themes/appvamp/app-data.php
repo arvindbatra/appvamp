@@ -78,8 +78,8 @@
 
 
 <?php if(isset($previousPostsArr)) { ?>
-<div class="body-box clearfix">
-<p align="left" ><h3><b>	Previous Posts </b></h3>  </p>
+<div class="body-box clearfix" style="text-align:left">
+<p align="left" ><h3><b>Previous Posts</b></h3></p>
 	<?php foreach($previousPostsArr as $previousPost) { ?>
 			<div class="previous-posts">
 				<a href="/app/<?php $mdate = $previousPost->onDate; echo date('Y/m/d', strtotime($mdate)); ?>/<?php echo (get_seo_string($previousPost->appInfo->appName)); ?>">
