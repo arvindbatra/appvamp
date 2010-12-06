@@ -83,7 +83,6 @@ function updatePaypalAddress()
 		data: 	"user_id=" + document.getElementById("popupPaypal_user_id").value + 
 				"&paypal_email_address=" + document.getElementById("popupPaypal_email_address").value,
 		success: function(html){
-			alert(html);
 			if(html == 'true')
 				$("#update_paypal_address_response").html("<i>Successfully updated paypal address!</i>");
 			else
