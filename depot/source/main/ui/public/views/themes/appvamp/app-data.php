@@ -17,7 +17,13 @@
 			<h4> <?php echo $featuredPost->appInfo->appSeller ?></h4>
 			<h4> Price: <?php if($featuredPost->appPrice != 0) 	echo '$' . $featuredPost->appPrice;
 							  else echo 'Free';
-			?></h4>
+			?></h4> 
+			<h3><strong> 
+				<?php if($featuredPost->refundPrice > 0.00) { ?> 
+					<?php echo 'Appvamp pays you: $'. number_format($featuredPost->refundPrice,2); ?> 
+				<?php }?>
+			</strong></h3>
+
 			<h4> Genre: <?php echo $featuredPost->appInfo->genre ?></h4>
 			<div style="width:200px" class="curved-box download-app">
 				<a href="<?php echo $featuredPost->appInfo->originalLink ?>" >View in iTunes </a>
@@ -54,6 +60,7 @@
 				<td>
 					<h4> Price: <?php if($featuredPost->appPrice != 0) 	echo '$'. $featuredPost->appPrice;
 							  else echo 'Free'; ?> </h4>
+
 				</td> <td>
 					<h4> Genre:<?php echo $featuredPost->appInfo->genre ?></h4>
 				</td></tr>
