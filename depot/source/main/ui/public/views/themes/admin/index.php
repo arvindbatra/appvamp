@@ -5,6 +5,9 @@
 <form name="view_schedule" action="view_schedule" method="GET">
 <input type="submit" value="View Schedule" />
 </form>
+<form name="reports" action="reports" method="GET">
+<input type="submit" value="Reports" />
+</form>
 <form name="sitemap" action="sitemap" method="GET">
 <input type="submit" value="View Sitemap" />
 </form>
@@ -119,6 +122,12 @@ if((strcmp($action, "view_schedule") == 0)|| (strcmp($action,"fetch_review") == 
 
 <?php } ?>
 
+<?php if(strcmp($action,'reports') == 0) { 
+	require_once($themeDir . DS. 'showArray.php');
+	 if(isset($reportDataArr)) { 
+		html_show_array($reportDataArr);
+	}
+} ?>
 
 <?php if(strcmp($action,'sitemap') == 0) {
 	require_once($themeDir . DS. 'sitemap.php');

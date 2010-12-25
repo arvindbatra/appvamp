@@ -289,7 +289,17 @@ class AdminController extends Controller
 		}
 		
 	}
-	
+
+
+	function reports()
+	{
+		$this->set('title', 'Reports');
+		$reportModel = new ReportModel();
+		$reportDataArr = $reportModel->getUserPayoutDataReport();
+		
+		$this->set('reportDataArr', $reportDataArr);
+
+	}
 
 
 };

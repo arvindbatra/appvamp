@@ -110,6 +110,7 @@ class DatabaseUtils
 			$appPost->tillDate = $row['till_date'];
 			$appPost->appPrice = $row['app_price'];
 			$appPost->refundPrice = $row['refund_price'];
+			//$logger->debug("arv_rows" . $appPost->refundPrice . ' ' . $row['refund_price'] . ' ' . implode(",", $row) );
 			
 			$appInfos = self::queryAppInfoById($dbHandle, $appId);
 			if(count($appInfos) >= 0)
@@ -611,5 +612,35 @@ class DatabaseUtils
 	}
 
 
-	
+	/*********************Reporting functions *************************/
+	public function getUserPayoutDataReport($dbHandle)
+	{
+		$logger = AppLogger::getInstance()->getLogger();
+
+		$query = "SELECT upt.user_id, upt.user_app_info_id, upt.price, upt.status, upt.created_at, ui.name, ui.paypal_email_address, uai.app_name, uai.purchased_date, uai.created_at FROM UserPayoutTransactions upt, UserInfo ui, UserAppInfo uai where ui.id = upt.user_id and status = 0 and uai.id= upt.user_app_info_id order by upt.user_id";
+		$logger->debug('Calling query ' . $query);
+		$result = mysql_query($query, $dbHandle);
+		if (!$result) {
+			$logger->error('Invalid query: ' . mysql_error());
+			return null;
+		}
+		$table = array();
+		$header = array();
+		$i =1;	
+
+		for ($j = 0; $j < mysql_num_fields($result); ++$j) {
+		    $header[$j] = mysql_field_name($result, $j);
+		}
+		$table[$i] = $header;
+		$i++;
+		while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) 
+		{
+			$table[$i] = $row;
+			$i++;
+		}
+		mysql_free_result($result);
+		return $table;
+
+
+	}
 }
