@@ -341,7 +341,7 @@ class AccountController extends Controller
 			$status = $this->VERIFICATION_STATUS_EXPIRED;
 
 		//if($phpVerifiedDate >= $phpOnDate && $phpVerifiedDate < $phpTillDate)
-		if($phpPurchasedDate >= $phpOnDate && $phpPurchasedDate < $phpTillDate)
+		if($phpPurchasedDate >= $phpOnDate && $phpPurchasedDate <= $phpTillDate)
 			$status = $this->VERIFICATION_STATUS_PENDING;
 		return $status;
 	}
