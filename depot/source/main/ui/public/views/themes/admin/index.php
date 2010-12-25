@@ -5,6 +5,9 @@
 <form name="view_schedule" action="view_schedule" method="GET">
 <input type="submit" value="View Schedule" />
 </form>
+<form name="sitemap" action="sitemap" method="GET">
+<input type="submit" value="View Sitemap" />
+</form>
 	
 <div class="error">
 	<?php if(isset($errorMsg)) { 
@@ -116,3 +119,8 @@ if((strcmp($action, "view_schedule") == 0)|| (strcmp($action,"fetch_review") == 
 
 <?php } ?>
 
+
+<?php if(strcmp($action,'sitemap') == 0) {
+	require_once($themeDir . DS. 'sitemap.php');
+}
+?>

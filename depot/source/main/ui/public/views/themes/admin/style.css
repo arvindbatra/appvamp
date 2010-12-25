@@ -24,3 +24,12 @@
 	border-radius: 10px; /* future proofing */
 	-khtml-border-radius: 10px; /* for old Konqueror browsers *p */ 
 }
+
+.shaded-box
+{
+	float:left;
+	margin:0 0 10px 10px;
+	padding:20px;
+	background:#ececec;
+}
+

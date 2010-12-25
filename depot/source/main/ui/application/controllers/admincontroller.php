@@ -10,7 +10,7 @@ class AdminController extends Controller
 		parent::__construct($qpacket);
 		$themeName = 'admin';
 		$this->set('themes', $themeName);
-		$this->set('themeDir',  '/views' . DS . 'themes' . DS . $themeName );
+		$this->set('themeDir',  'views' . DS . 'themes' . DS . $themeName );
 	
 		if(array_key_exists('attribute_1', $qpacket))
 		{
@@ -276,6 +276,20 @@ class AdminController extends Controller
 
 	}
 
+	function sitemap()
+	{
+		$this->set('title', 'Sitemap');
+		$appModel = new AppModel();
+		$date = $today = date("Y-m-d");
+		$previousPostsArr = $appModel->getPreviousPostsFromDate($date, 10000);
+		if(isset($previousPostsArr))
+		{
+			$this->logger->debug('Found previous posts size:' . count($previousPostsArr));
+			$this->set('previousPostsArr', $previousPostsArr);
+		}
+		
+	}
+	
 
 
 };
